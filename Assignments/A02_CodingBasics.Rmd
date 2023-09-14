@@ -66,7 +66,7 @@ df_score <- as.data.frame(score)
 df_pass <- as.data.frame(pass)
 
 df_test_results <- cbind(df_name, df_score, df_pass)
-View(df_test_results)
+
 ```
 
 9.  QUESTION: How is this data frame different from a matrix?
