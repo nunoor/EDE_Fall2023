@@ -1,6 +1,6 @@
 ---
-title: "Assignment 2: Coding Basics"
-author: "Student Name"
+title: NusratNoor_A02_CodingBasics.Rmd
+author: Nusrat Noor
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
@@ -32,10 +32,18 @@ This exercise accompanies the lessons in Environmental Data Analytics on coding 
 
 ```{r basics 1}
 #1. 
+seq(1, 30, 3) #running a sequence from 1 to 10 by factor of 3
+three_sequence <- seq(1, 30, 3) #naming the sequence 
 
 #2. 
+mean(three_sequence) #calculating the mean
+median(three_sequence) #calculating the median
 
 #3. 
+mn <- mean(three_sequence)
+md <- median(three_sequence)
+
+
 
 ```
 
