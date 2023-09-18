@@ -51,9 +51,9 @@ matrix3 <- matrix(1:20, nrow = 5, ncol = 4, byrow = TRUE, # return after comma c
                   dimnames = list(c("uno", "dos", "tres", "quatro", "cinco"), 
                                   c("un", "deux", "trois", "quatre"))) #
 
-matrix1[4, ] #
-matrix1[ , 3] #
-matrix1[c(12, 14)] #
+matrix1[4, ] # row 4. all elements 
+matrix1[ , 3] # column 3, all elements
+matrix1[c(12, 14)] # 
 matrix1[c(12:14)] #
 matrix1[2:4, 1:3] #
 
@@ -94,24 +94,37 @@ Question: In the R chunk below, write "dataframe1\$". Press `tab` after you type
 Find a ten-day forecast of temperatures (Fahrenheit) for Durham, North Carolina. Create two vectors, one representing the high temperature on each of the ten days and one representing the low.
 
 ```{r DataExercise-1a}
-
+high_temp <- c(81, 71, 72, 63, 51, 52, 61, 64, 67, 73)
+low_temp <- c(42, 49, 60, 46, 32, 32, 41, 47, 52, 54)
 ```
 
 Now, create two additional vectors that include the ten-day forecast for the high and low temperatures in Celsius. Use a function to create the two new vectors from your existing ones in Fahrenheit.
 
 ```{r DataExercise-1b}
-
+high_temp_C <- ((high_temp-32) * (5/9))
+high_temp_C
+low_temp_C <- ((low_temp-32) * (5/9))
+low_temp_C
 ```
 
 Combine your four vectors into a data frame and add informative column names.
 
 ```{r DataExercise-1c}
+ten_day_forcast<- (data.frame(high_temp, high_temp_C, low_temp, low_temp_C))
+colnames(ten_day_forcast)<-c("High Temperatures Fahrenheit", "High Temperatures Celcius", "Low temperatures Fahrenheit", "Low Temperatures Celcius")
+View(ten_day_forcast)
 
+#you can also do this in one step i.e. giving it a better name and making a data frame at the same time
 ```
 
 Use the common functions `summary` and `sd` to obtain basic data summaries of the ten-day forecast. How would you call these functions differently for the entire data frame vs. a single column? Attempt to demonstrate both options below.
 
 ```{r DataExercise-1d}
+summary(ten_day_forcast)
+
+#cannot use sd on a data frame, use it for an element in your data frame
+
+sd(high_temp) #sd = standard deviation
 
 ```
 
@@ -127,7 +140,7 @@ Remember formatting of dates in R:
 # An example is provided to get you started.
 # (code must be uncommented)
 today <- Sys.Date()
-format(today, format = "%B")
+format(today, format = "%B-%Y")
 #format(today, format = "")
 #format(today, format = "")
 #format(today, format = "")
@@ -159,8 +172,8 @@ date_obj_today
 #Ex_3 - on your own...
 str_juneteenth <- "19 June 1865"
 #Since the format is month-day-year we will use function mdy()
-#date_juneteenth <- ()
-#date_juneteenth
+date_juneteenth <- dmy(str_juneteenth)
+date_juneteenth
 ```
 
 ```{r DateExercise2}
