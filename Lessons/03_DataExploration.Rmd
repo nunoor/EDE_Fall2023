@@ -23,7 +23,7 @@ If your working directory is not set to the folder you want, you have several op
 
 ```{r Setting the working directory }
 # Absolute file path is commented out
-setwd("/home/guest/EDE_Fall2023") #doesnt work because i dont have that directory but this is how i would do it for a directory i do have
+setwd("/home/EDE_Fall2023") #doesnt work because i dont have that directory but this is how i would do it for a directory i do have
 ```
 
 You may change your working directory without coding by going to the Session menu in RStudio and navigating to the Set Working Directory tab. From there, you may select from a series of options to reset your working directory. 
@@ -84,19 +84,19 @@ Commons functions to import datasets and store as data frames are *read.table()*
 
 ```{r Importing data}
 # Absolute file path (not recommended)
-#read.csv("/home/guest/EDE_Fall2023/Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)
+read.csv("C:/users/nn107/Documents/EDE_Fall2023/Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)
 
 # Relative file path (friendly for users regardless of machine)
 USGS.flow.data <- read.csv("./Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)   
 
 # What happens if we don't assign a name to our imported dataset?
-#read.csv("./Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)
+read.csv("./Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)
 
 # Another option is to choose with your browser
-# read.csv(file.choose(),stringsAsFactors = TRUE)
+read.csv(file.choose(USGS.flow.data),stringsAsFactors = TRUE)
 
 # To import .txt files, use read.table rather than read.csv
-#read.table()
+read.table()
 
 ```
 
