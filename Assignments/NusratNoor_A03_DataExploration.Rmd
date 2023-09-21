@@ -80,14 +80,14 @@ falling and accumulaing) to make more informed management decisions.
 
 5.  What are the dimensions of the dataset?
 
-```{r Neonics-Dimensions}
+```{r Neonics_Dimensions}
 dim(Neonics) #ran the dimensions function, it showed that there are 4623 rows and 30 columns
 
 ```
 
 6.  Using the `summary` function on the "Effect" column, determine the most common effects that are studied. Why might these effects specifically be of interest?
 
-```{r Neonics-Effects-Summary}
+```{r Neonics_Effects_Sum}
 summary(Neonics$Effect) #ran summary function of the effects column using the $ sign
 
 ```
@@ -98,7 +98,7 @@ having on insects and which impacts are more prevalent/more often occuring and n
 
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.[TIP: The `sort()` command can sort the output of the summary command...]
 
-```{r Top-Six-Studied-Insects}
+```{r Top_Six_Studied_Insects}
 species_name_summary <- summary(Neonics$Species.Common.Name) #got the counts for each species studied in the dataset
 species_name_summary #called out the summary
 sorted_species <- sort(species_name_summary, decreasing = TRUE) #sorted the value counts by  decreasing counts
@@ -115,7 +115,7 @@ is an unwanted and very dangerous impact.
 
 8.  Concentrations are always a numeric value. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric?
 
-```{r Neonics-Conc-Class}
+```{r Neonics_Conc_Class}
 class(Neonics$Conc.1..Author.) #checked the class of the conc.1..author and it was factor class
 
 ```
@@ -128,7 +128,7 @@ some say "NR" which can only be there if the class is categorical i.e. a factor
 
 9.  Using `geom_freqpoly`, generate a plot of the number of studies conducted by publication year.
 
-```{r Publication-Yr-Freq-Plot}
+```{r Pub_Yr_Freq_Plot}
 Publication_year <- (Neonics$Publication.Year) #set vector as publication year 
 Publication_year #called out publication year
 ggplot(Neonics) +
@@ -138,7 +138,7 @@ ggplot(Neonics) +
 
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.
 
-```{r TestLoc-Freq-Plot}
+```{r TestLoc_Freq_Plot}
 Test_location <- Neonics$Test.Location # set test location vector
 Test_location #called back test_location
 
@@ -157,7 +157,7 @@ dominating in terms of frequency.
 
 [**TIP**: Add `theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))` to the end of your plot command to rotate and align the X-axis labels...]
 
-```{r Endpoint-Bar-Graph}
+```{r Endpoint_Bar_Graph}
 Endpoint <- Neonics$Endpoint #set endpoint vector
 Endpoint #called back endpoint
 
@@ -171,7 +171,7 @@ ggplot(Neonics, aes(x = Endpoint)) + geom_bar() + theme(axis.text.x = element_te
 
 12. Determine the class of collectDate. Is it a date? If not, change to a date and confirm the new class of the variable. Using the `unique` function, determine which dates litter was sampled in August 2018.
 
-```{r Aug2018-Collection-Dates}
+```{r Aug2018_Coll_Dates}
 class(Litter$collectDate) #checked the class, it was factor
 
 Litter$collectDate <- as.Date(Litter$collectDate) #changed the class to date using as.date function
@@ -184,7 +184,7 @@ august_2018 #called back to check that it worked
 
 13. Using the `unique` function, determine how many plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
 
-```{r NiwotRidge-Unique-Points}
+```{r NiwotRidge_Unique_Pts}
 niwot_ridge_plots <- unique(Litter$plotID) #used the unique function to show how many samples were taken at Niwot Ridge
 niwot_ridge_plots #called back to check that it worked
 ```
@@ -195,7 +195,7 @@ like the summary function does. Thats why its good for filtering out data.
 
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
-```{r Func-Group-Bar-Graph}
+```{r FuncGroup_Bar}
 
 functionalGroup <- Litter$functionalGroup #set functional group vector
 functionalGroup #called back functional group
@@ -207,7 +207,7 @@ ggplot(Litter, aes(x = Litter$functionalGroup)) + geom_bar() + theme(axis.text.x
 
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of dryMass by functionalGroup.
 
-```{r Func-Group-Boxplot-vs-Violin-Plot}
+```{r FuncGroup_BoxplotvsViolin}
 dryMass <- Litter$dryMass #set dryMass as vector
 dryMass #called back dryMass
 
