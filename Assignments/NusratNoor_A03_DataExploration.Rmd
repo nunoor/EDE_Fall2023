@@ -151,7 +151,9 @@ Test_location <- Neonics$Test.Location # set test location vector
 Test_location #called out test location
 
 ggplot(Neonics) +
-  geom_freqpoly(aes(x = Publication_Year, color = Test_location), bins = 50) #ran frequency polygraph for the publication year and formatted
+  geom_freqpoly(aes(x = Publication_Year, color = Test_location), bins = 50) 
+
+#ran frequency polygraph for the publication year and formatted
 #it so the each test location was a different color
 
 ```
@@ -170,7 +172,8 @@ dominating in terms of frequency.
 Endpoint <- Neonics$Endpoint #set endpoint vector
 Endpoint #called back endpoint
 
-ggplot(Neonics, aes(x = Endpoint)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+ggplot(Neonics, aes(x = Endpoint)) + geom_bar() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 # created a bar graph of neonics endpoints and formatted to make the xaxis easier ro read
 ```
 
