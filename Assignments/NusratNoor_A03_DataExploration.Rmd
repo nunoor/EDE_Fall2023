@@ -40,8 +40,10 @@ library(tidyverse) #loaded tidyverse packages
 
 Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE) 
 #uploaded the ecotox neonics data, and named it Neonics in one command and set the read strings in as factors subcommand
+Neonics #called out neonics
 Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", stringsAsFactors = TRUE) 
 #uploaded the litter data and named it and set string to read as factors in one command
+Litter #called out litter
 
 #view(Neonics) #viewed the dataset to make sure it worked, it did
 #view(Litter) #viewed the dataset to make sure it worked, it did
@@ -100,23 +102,23 @@ having on insects and which impacts are more prevalent/more often occuring and n
 
 ```{r}
 species_name_summary <- summary(Neonics$Species.Common.Name) #got the counts for each species studied in the dataset
-species_name_summary
+species_name_summary #called out the summary
 sorted_species <- sort(species_name_summary, decreasing = TRUE) #sorted the value counts by  decreasing counts
-sorted_species
+sorted_species #called out the object to make sure it did sort it correctly
 top_six <- head(sorted_species, 6) 
 #asked to show the top 6 species names studied from the descending list, making them the most studied
-top_six
+top_six #called out the top six
 
 ```
 
-> Answer: They are all very inportant to ecosystem health and provide a lot of services. 
+> Answer: They are all very important to ecosystem health and provide a lot of services. 
 They are all also not the target species for pesticides so them being impacted by the pesticides 
 is an unwanted and very dangerous impact. 
 
 8.  Concentrations are always a numeric value. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric?
 
 ```{r}
-class(Neonics$Conc.1..Author.)
+class(Neonics$Conc.1..Author.) #checked the class of the conc.1..author and it was factor class
 
 ```
 
