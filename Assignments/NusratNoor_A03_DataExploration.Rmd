@@ -45,8 +45,6 @@ Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", strin
 #uploaded the litter data and named it and set string to read as factors in one command
 Litter #called out litter
 
-#view(Neonics) #viewed the dataset to make sure it worked, it did
-#view(Litter) #viewed the dataset to make sure it worked, it did
 ```
 
 ## Learn about your system
@@ -131,18 +129,18 @@ some say "NR" which can only be there if the class is categorical i.e. a factor
 9.  Using `geom_freqpoly`, generate a plot of the number of studies conducted by publication year.
 
 ```{r Publication Year Frequency Plot}
-Publication_year <- (Neonics$Publication.Year) #set object from 
-Publication_year
+Publication_year <- (Neonics$Publication.Year) #set vector as publication year 
+Publication_year #called out publication year
 ggplot(Neonics) +
   geom_freqpoly(aes(x =Publication_year), bins = 50)
-
+#plotted a frequency plot of the number of studies by publication year
 ```
 
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.
 
 ```{r Test Location Frequency Plot}
-Test_location <- Neonics$Test.Location # 
-Test_location #
+Test_location <- Neonics$Test.Location # set test location vector
+Test_location #called back test_location
 
 ggplot(Neonics) +
   geom_freqpoly(aes(x = Publication_year, color = Test_location), bins = 50) # ran frequency polygraph for the publication year and formatted it so the each test location was a different color
@@ -160,25 +158,23 @@ dominating in terms of frequency.
 [**TIP**: Add `theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))` to the end of your plot command to rotate and align the X-axis labels...]
 
 ```{r Endpoint Bar Graph}
-Endpoint <- Neonics$Endpoint
-Endpoint
+Endpoint <- Neonics$Endpoint #set endpoint vector
+Endpoint #called back endpoint
 
 ggplot(Neonics, aes(x = Endpoint)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 # created a bar graph of neonics endpoints and formatted to make the xaxis easier ro read
 ```
 
-> Answer: The two most common endpoints are LOEL and NOEL. LOEL is defined as 
-Lowest-observable-effect-level. NOEL is defined as No-observable-effect-level.
+> Answer: The two most common endpoints are LOEL and NOEL. LOEL is defined as Lowest-observable-effect-level. NOEL is defined as No-observable-effect-level.
 
 ## Explore your data (Litter)
 
 12. Determine the class of collectDate. Is it a date? If not, change to a date and confirm the new class of the variable. Using the `unique` function, determine which dates litter was sampled in August 2018.
 
 ```{r August 2018 Collection Dates}
-class(Litter$collectDate) #checked the class, factor
+class(Litter$collectDate) #checked the class, it was factor
 
-Litter$collectDate <- as.Date(Litter$collectDate) #changed the class to as.date
-Litter$collectDate #called back the collect date 
+Litter$collectDate <- as.Date(Litter$collectDate) #changed the class to date using as.date function
 class(Litter$collectDate)#checked that the class is now date
 
 august_2018 <- unique(Litter$collectDate[month(Litter$collectDate) == 8])
@@ -200,10 +196,11 @@ like the summary function does. Thats why its good for filtering out data.
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
 ```{r Litter Functional Group Bar Graph}
-functionalGroup <- Litter$functionalGroup
-functionalGroup
 
-ggplot(Litter, aes(x = functionalGroup)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+functionalGroup <- Litter$functionalGroup #set functional group vector
+functionalGroup #called back functional group
+
+ggplot(Litter, aes(x = Litter$functionalGroup)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 #made a bar graph of the functional group counts and formatted to the xaxis was easier to read
 
 ```
@@ -211,16 +208,17 @@ ggplot(Litter, aes(x = functionalGroup)) + geom_bar() + theme(axis.text.x = elem
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of dryMass by functionalGroup.
 
 ```{r Functional Group Boxplot vs Violin Plot}
-dryMass <- Litter$dryMass
-dryMass
+dryMass <- Litter$dryMass #set dryMass as vector
+dryMass #called back dryMass
+
 ggplot(Litter) +
   geom_boxplot(aes(x = functionalGroup, y = dryMass)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-#created a box plot of the functionak group counts and formatted the xaxis to make it easier to read
+#created a box plot of the dry mass by functional group counts and formatted the xaxis to make it easier to read
 
 ggplot(Litter) +
       geom_violin(aes(x = functionalGroup, y = dryMass), 
               draw_quantiles = c(0.25, 0.5, 0.75))
-#created a violin plot of the functional group counts
+#created a violin plot of the dry mass by functional group counts
 ```
 
 Why is the boxplot a more effective visualization option than the violin plot in this case?
