@@ -38,10 +38,13 @@ getwd() #checked current directory, in the EDE_Fall2023 folder
 library(lubridate) #loaded lubridate
 library(tidyverse) #loaded tidyverse packages
 
-Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE) 
-#uploaded the ecotox neonics data, and named it Neonics in one command and set the read strings in as factors subcommand
+Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv",
+                    stringsAsFactors = TRUE) 
+#uploaded the ecotox neonics data, and named it Neonics in one command and 
+#set the read strings in as factors subcommand
 
-Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", stringsAsFactors = TRUE) 
+Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv",
+                   stringsAsFactors = TRUE) 
 #uploaded the litter data and named it and set string to read as factors in one command
 
 
@@ -99,12 +102,15 @@ having on insects and which impacts are more prevalent/more often occuring and n
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.[TIP: The `sort()` command can sort the output of the summary command...]
 
 ```{r Top_Six_Studied_Insects}
-species_name_summary <- summary(Neonics$Species.Common.Name) #got the counts for each species studied in the dataset
+species_name_summary <- summary(Neonics$Species.Common.Name) #got the counts for each
+#species studied in the dataset
 species_name_summary #called out the summary
-sorted_species <- sort(species_name_summary, decreasing = TRUE) #sorted the value counts by  decreasing counts
+sorted_species <- sort(species_name_summary, decreasing = TRUE) 
+#sorted the value counts by  decreasing counts
 sorted_species #called out the object to make sure it did sort it correctly
 top_six <- head(sorted_species, 6) 
-#asked to show the top 6 species names studied from the descending list, making them the most studied
+#asked to show the top 6 species names studied from the descending list,
+#making them the most studied
 top_six #called out the top six
 
 ```
@@ -116,7 +122,8 @@ is an unwanted and very dangerous impact.
 8.  Concentrations are always a numeric value. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric?
 
 ```{r Neonics_Conc_Class}
-class(Neonics$Conc.1..Author.) #checked the class of the conc.1..author and it was factor class
+class(Neonics$Conc.1..Author.) 
+#checked the class of the conc.1..author and it was factor class
 
 ```
 
@@ -129,10 +136,11 @@ some say "NR" which can only be there if the class is categorical i.e. a factor
 9.  Using `geom_freqpoly`, generate a plot of the number of studies conducted by publication year.
 
 ```{r Pub_Yr_Freq_Plot}
-Publication_year <- (Neonics$Publication.Year) #set vector as publication year 
-Publication_year #called out publication year
+Publication_Year <- Neonics$Publication.Year #set publication year as vector
+Publication_Year # called back publication year
+
 ggplot(Neonics) +
-  geom_freqpoly(aes(x =Publication_year), bins = 50)
+  geom_freqpoly(aes(x = Publication_Year), bins = 50)
 #plotted a frequency plot of the number of studies by publication year
 ```
 
@@ -140,10 +148,11 @@ ggplot(Neonics) +
 
 ```{r TestLoc_Freq_Plot}
 Test_location <- Neonics$Test.Location # set test location vector
-Test_location #called back test_location
+Test_location #called out test location
 
 ggplot(Neonics) +
-  geom_freqpoly(aes(x = Publication_year, color = Test_location), bins = 50) # ran frequency polygraph for the publication year and formatted it so the each test location was a different color
+  geom_freqpoly(aes(x = Publication_Year, color = Test_location), bins = 50) #ran frequency polygraph for the publication year and formatted
+#it so the each test location was a different color
 
 ```
 
@@ -174,7 +183,8 @@ ggplot(Neonics, aes(x = Endpoint)) + geom_bar() + theme(axis.text.x = element_te
 ```{r Aug2018_Coll_Dates}
 class(Litter$collectDate) #checked the class, it was factor
 
-Litter$collectDate <- as.Date(Litter$collectDate) #changed the class to date using as.date function
+Litter$collectDate <- as.Date(Litter$collectDate) #changed the class to date using 
+#as.date function
 class(Litter$collectDate)#checked that the class is now date
 
 august_2018 <- unique(Litter$collectDate[month(Litter$collectDate) == 8])
@@ -185,8 +195,9 @@ august_2018 #called back to check that it worked
 13. Using the `unique` function, determine how many plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
 
 ```{r NiwotRidge_Unique_Pts}
-niwot_ridge_plots <- unique(Litter$plotID) #used the unique function to show how many samples were taken at Niwot Ridge
-niwot_ridge_plots #called back to check that it worked
+niwot_ridge_plots <- unique(Litter$plotID) #used the unique function to show how 
+#many samples were taken at Niwot Ridge
+niwot_ridge_plots #called back 
 ```
 
 > Answer: 12 plots were sampled. The unique function only gives you unique values but 
@@ -200,7 +211,8 @@ like the summary function does. Thats why its good for filtering out data.
 functionalGroup <- Litter$functionalGroup #set functional group vector
 functionalGroup #called back functional group
 
-ggplot(Litter, aes(x = Litter$functionalGroup)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+ggplot(Litter, aes(x = functionalGroup)) + geom_bar() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 #made a bar graph of the functional group counts and formatted to the xaxis was easier to read
 
 ```
@@ -212,8 +224,10 @@ dryMass <- Litter$dryMass #set dryMass as vector
 dryMass #called back dryMass
 
 ggplot(Litter) +
-  geom_boxplot(aes(x = functionalGroup, y = dryMass)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-#created a box plot of the dry mass by functional group counts and formatted the xaxis to make it easier to read
+  geom_boxplot(aes(x = functionalGroup, y = dryMass)) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+#created a box plot of the dry mass by functional group counts and formatted
+#the xaxis to make it easier to read
 
 ggplot(Litter) +
       geom_violin(aes(x = functionalGroup, y = dryMass), 
