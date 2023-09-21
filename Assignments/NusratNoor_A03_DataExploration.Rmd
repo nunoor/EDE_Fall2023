@@ -35,8 +35,8 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 ```{r loadpkgs, message=FALSE}
 getwd() #checked current directory, in the EDE_Fall2023 folder
 
-#library(lubridate) #loaded lubridate
-#library(tidyverse) #loaded tidyverse packages
+library(lubridate) #loaded lubridate
+library(tidyverse) #loaded tidyverse packages
 
 Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE) 
 #uploaded the ecotox neonics data, and named it Neonics in one command and set the read strings in as factors subcommand
