@@ -40,10 +40,10 @@ library(tidyverse) #loaded tidyverse packages
 
 Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE) 
 #uploaded the ecotox neonics data, and named it Neonics in one command and set the read strings in as factors subcommand
-Neonics #called out neonics
+#Neonics #called out neonics
 Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", stringsAsFactors = TRUE) 
 #uploaded the litter data and named it and set string to read as factors in one command
-Litter #called out litter
+#Litter #called out litter
 
 ```
 
