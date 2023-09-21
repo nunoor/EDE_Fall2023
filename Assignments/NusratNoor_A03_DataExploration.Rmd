@@ -32,35 +32,49 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 
 1.  Check your working directory, load necessary packages (tidyverse, lubridate), and upload two datasets: the ECOTOX neonicotinoid dataset (ECOTOX_Neonicotinoids_Insects_raw.csv) and the Niwot Ridge NEON dataset for litter and woody debris (NEON_NIWO_Litter_massdata_2018-08_raw.csv). Name these datasets "Neonics" and "Litter", respectively. Be sure to include the subcommand to read strings in as factors.
 
-```{r load pkgs, message=FALSE}
+```{r loadpkgs, message=FALSE}
 getwd() #checked current directory, in the EDE_Fall2023 folder
 
 library(lubridate) #loaded lubridate
 library(tidyverse) #loaded tidyverse packages
 
-Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE) #uploaded the ecotox neonics data, and named it Neonics in one command and set the read strings in as factors subcommand
-Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", stringsAsFactors = TRUE) #uploaded the litter data and named it and set string to read as factors in one command
+Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE) 
+#uploaded the ecotox neonics data, and named it Neonics in one command and set the read strings in as factors subcommand
+Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", stringsAsFactors = TRUE) 
+#uploaded the litter data and named it and set string to read as factors in one command
 
-view(Neonics) #viewed the dataset to make sure it worked, it did
-view(Litter) #viewed the dataset to make sure it worked, it did
+#view(Neonics) #viewed the dataset to make sure it worked, it did
+#view(Litter) #viewed the dataset to make sure it worked, it did
 ```
 
 ## Learn about your system
 
 2.  The neonicotinoid dataset was collected from the Environmental Protection Agency's ECOTOX Knowledgebase, a database for ecotoxicology research. Neonicotinoids are a class of insecticides used widely in agriculture. The dataset that has been pulled includes all studies published on insects. Why might we be interested in the ecotoxicology of neonicotinoids on insects? Feel free to do a brief internet search if you feel you need more background information.
 
-> Answer: It's important to get an understanding on the impact of neonicotinoids on insects since they can be such an important part of ecosystem health. These insecticides are targetting them and so looking at all the research on insects can help to show how insects in areas with neonicotinoid usage differ from those in areas without and compare any potential differences over time. We want to be able to know exactly in what ways the insecticides are impacting the insects to then make more informed management decisions. 
+> Answer: It's important to get an understanding on the impact of neonicotinoids on insects since 
+they can be such an important part of ecosystem health. These insecticides are targetting them and 
+so looking at all the research on insects can help to show how insects in areas with neonicotinoid 
+usage differ from those in areas without and compare any potential differences over time. We want 
+to be able to know exactly in what ways the insecticides are impacting the insects to then make more 
+informed management decisions. 
 
 3.  The Niwot Ridge litter and woody debris dataset was collected from the National Ecological Observatory Network, which collectively includes 81 aquatic and terrestrial sites across 20 ecoclimatic domains. 32 of these sites sample forest litter and woody debris, and we will focus on the Niwot Ridge long-term ecological research (LTER) station in Colorado. Why might we be interested in studying litter and woody debris that falls to the ground in forests? Feel free to do a brief internet search if you feel you need more background information.
 
-> Answer: We would want to do this as a result of the increase in forest fires due to the accumulaiton of debris. This is something that is having huge impacts on people and environments and we need to better understand what is happening and the factors surrounding it (how quickly leaf litter is falling and accumulaing) to make more informed management decisions. 
+> Answer: We would want to do this as a result of the increase in forest fires due to the accumulaiton 
+of debris. This is something that is having huge impacts on people and environments and we need to 
+better understand what is happening and the factors surrounding it (how quickly leaf litter is 
+falling and accumulaing) to make more informed management decisions. 
 
 4.  How is litter and woody debris sampled as part of the NEON network? Read the NEON_Litterfall_UserGuide.pdf document to learn more. List three pieces of salient information about the sampling methods here:
 
 > Answer: 
- 1."Litter is defined as material that is dropped from the forest canopy and has a buttt end diameter <2cm and a length <50cm" (Jones K., 2017)
- 2.All of tthe samples were taking in terrestrial sitets with woody vegetation of at least 2meters tall and the size of the plots depended on available place, plot spacing, and/or tower airshed sizes. (Jones K., 2017) 
- 3. The placements of the traps in each plot were either targeted or randomized depending on the vegetation. (Jones K., 2017)
+ 1."Litter is defined as material that is dropped from the forest canopy and has a buttt end 
+ diameter <2cm and a length <50cm" (Jones K., 2017)
+ 2.All of tthe samples were taking in terrestrial sitets with woody vegetation of at least 
+ 2meters tall and the size of the plots depended on available place, plot spacing, and/or tower 
+ airshed sizes. (Jones K., 2017) 
+ 3. The placements of the traps in each plot were either targeted or randomized depending on the 
+ vegetation. (Jones K., 2017)
 
 ## Obtain basic summaries of your data (Neonics)
 
@@ -78,7 +92,8 @@ summary(Neonics$Effect) #ran summary function of the effects column using the $ 
 
 ```
 
-> Answer: These effects are important to know exactly what kind of impacts the insecticides are having on insects and which impacts are more prevalent/more often occuring and needs a closer look at. 
+> Answer: These effects are important to know exactly what kind of impacts the insecticides are 
+having on insects and which impacts are more prevalent/more often occuring and needs a closer look at. 
 
 
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.[TIP: The `sort()` command can sort the output of the summary command...]
@@ -88,12 +103,15 @@ species_name_summary <- summary(Neonics$Species.Common.Name) #got the counts for
 species_name_summary
 sorted_species <- sort(species_name_summary, decreasing = TRUE) #sorted the value counts by  decreasing counts
 sorted_species
-top_six <- head(sorted_species, 6) #asked to show the top 6 species names studied from the descending list, making them the most studied
+top_six <- head(sorted_species, 6) 
+#asked to show the top 6 species names studied from the descending list, making them the most studied
 top_six
 
 ```
 
-> Answer: They are all very inportant to ecosystem health and provide a lot of services. They are all also not the target species for pesticides so them being impacted by the pesticides is an unwanted and very dangerous impact. 
+> Answer: They are all very inportant to ecosystem health and provide a lot of services. 
+They are all also not the target species for pesticides so them being impacted by the pesticides 
+is an unwanted and very dangerous impact. 
 
 8.  Concentrations are always a numeric value. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric?
 
@@ -103,7 +121,8 @@ class(Neonics$Conc.1..Author.)
 ```
 
 > Answer:
-The Conc.1..Author column's class is factor because not all the fields only have numbers in them, some say "NR" which can only be there if the class is categorical i.e. a factor
+The Conc.1..Author column's class is factor because not all the fields only have numbers in them, 
+some say "NR" which can only be there if the class is categorical i.e. a factor
 
 ## Explore your data graphically (Neonics)
 
@@ -130,7 +149,9 @@ ggplot(Neonics) +
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
 
-> Answer: The most common test locations are "Field natural" and "Lab". "Field natural" was more common and would compete with "lab" locations but in recent years, "lab" locations are dominating in terms of frequency. 
+> Answer: The most common test locations are "Field natural" and "Lab". "Field natural" was 
+more common and would compete with "lab" locations but in recent years, "lab" locations are 
+dominating in terms of frequency. 
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information. 
 
@@ -144,7 +165,8 @@ ggplot(Neonics, aes(x = Endpoint)) + geom_bar() + theme(axis.text.x = element_te
 
 ```
 
-> Answer: The two most common endpoints are LOEL and NOEL. LOEL is defined as Lowest-observable-effect-level. NOEL is defined as No-observable-effect-level.
+> Answer: The two most common endpoints are LOEL and NOEL. LOEL is defined as 
+Lowest-observable-effect-level. NOEL is defined as No-observable-effect-level.
 
 ## Explore your data (Litter)
 
@@ -177,7 +199,9 @@ niwot_ridge_plots <- unique(Litter$plotID)
 niwot_ridge_plots
 ```
 
-> Answer: 12 plots were sampled. The unique function only gives you unique values but doesn't give you any other data like how often each unique value was present in the data like the summary function does. Thats why its good for filtering out data. 
+> Answer: 12 plots were sampled. The unique function only gives you unique values but 
+doesn't give you any other data like how often each unique value was present in the data 
+like the summary function does. Thats why its good for filtering out data. 
 
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
@@ -206,8 +230,11 @@ ggplot(Litter) +
 
 Why is the boxplot a more effective visualization option than the violin plot in this case?
 
-> Answer: The boxplot is better in this case because there aren't that many data points (not much distribution) that fall into the IQR for the violin plot to show, so it ends up looking like thin black lines that are a lot harder to read than a box plot. 
+> Answer: The boxplot is better in this case because there aren't that many data points 
+(not much distribution) that fall into the IQR for the violin plot to show, so it ends 
+up looking like thin black lines that are a lot harder to read than a box plot. 
 
 What type(s) of litter tend to have the highest biomass at these sites?
 
-> Answer: Needles and and then mixed litter tend to have the highest biomass followed by twigs/branches. 
+> Answer: Needles and and then mixed litter tend to have the highest biomass followed 
+by twigs/branches. 
