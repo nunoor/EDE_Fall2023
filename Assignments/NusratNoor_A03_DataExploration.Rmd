@@ -173,22 +173,11 @@ Lowest-observable-effect-level. NOEL is defined as No-observable-effect-level.
 12. Determine the class of collectDate. Is it a date? If not, change to a date and confirm the new class of the variable. Using the `unique` function, determine which dates litter was sampled in August 2018.
 
 ```{r}
-collectDate <- Litter$collectDate
-collectDate
-class(Collect_date) #factor
+class(Litter$collectDate) #factor
 
-Litter$collectDate <- as.Date(Litter$collectDate, format = "%m/%d/%y")
-class(collectDate) #date
+Litter$collectDate <- as.Date(Litter$collectDate) #date
 
-month_wanted <- 8
-year_wanted <- 2018
-month_wanted
-year_wanted
-
-extracted_data <- subset(Litter, format(Date, "%m") == month_wanted & format(Date, "%Y") == year_wanted)
-extracted_data
-
-august_2018 <- unique(extracted_data$weighDate)
+august_2018 <- unique(Litter$collectDate[month(Litter$collectDate) == 8])
 august_2018
 ```
 
