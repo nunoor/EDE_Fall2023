@@ -1,6 +1,6 @@
 ---
-title: "Assignment 4: Data Wrangling"
-author: "Student Name"
+title: "NusratNoor_A04_DataWrangling"
+author: "Nusrat Noor"
 output: pdf_document
 geometry: margin=2.54cm
 ---
@@ -31,11 +31,24 @@ The completed exercise is due on Thursday, Sept 28th @ 5:00pm.
 2. Apply the `glimpse()` function to reveal the dimensions, column names, and structure of each dataset. 
 
 ```{r setup, message = FALSE}
-#1a 
+#1a
+install.packages("tidyverse") #install tidyverse
+install.packages("lubridate") #install lubridate
+install.packages("here") #install here 
+
+library(tidyverse) #load tidyverse
+library(lubridate) #load lubridate    
+library(here) #load here
+
 
 #1b 
 
+getwd() #checked working directory
+
 #1c 
+
+EPAair_2018 <- read.csv("./Data/Raw/EPAair_O3_NC2018_raw.csv", stringsAsFactors = TRUE)
+EPAair_2019 <- read.csv("./Data/Raw/EPAair_O3_NC2019_raw.csv", stringsAsFactors = TRUE)
 
 #2 
 
