@@ -11,7 +11,7 @@ editor_options:
 ```{r setup}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 #Read packages
-library(tidyverse);library(lubridate); library(here)
+library(tidyverse); library(lubridate); library(here)
 
 #Read in data, don't convert strings to factors
 sites <- read.csv(here('Data/Raw/NWIS_SiteFlowData_NE_Raw.csv'))
@@ -19,6 +19,9 @@ dim(sites)
 
 #Convert date column to date object
 sites$date <- ymd_hms(sites$date)
+sites$date <- wday(sites$date)
+
+#'here' function you can do in console to help fill out and find the file folder you want to import or load into the rmarkdown
 
 ```
 
