@@ -43,12 +43,12 @@ library(here) #load here
 
 #1b 
 
-getwd() #checked working directory
+here() #checked working directory
 
 #1c 
 
-EPAair_2018 <- read.csv("./Data/Raw/EPAair_O3_NC2018_raw.csv", stringsAsFactors = TRUE)
-EPAair_2019 <- read.csv("./Data/Raw/EPAair_O3_NC2019_raw.csv", stringsAsFactors = TRUE)
+EPAair_2018 <- read.csv(here("./Data/Raw/EPAair_O3_NC2018_raw.csv"), stringsAsFactors = TRUE)
+EPAair_2019 <- read.csv(here("./Data/Raw/EPAair_O3_NC2019_raw.csv"), stringsAsFactors = TRUE)
 
 #2 
 
