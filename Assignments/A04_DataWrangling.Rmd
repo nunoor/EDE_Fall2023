@@ -77,6 +77,7 @@ glimpse(EPAair_PM_2019)
 ```{r}
 #3
 
+
 as.Date(EPAair_2018$Date)
 as.Date(EPAair_2019$Date)
 as.Date(EPAair_PM_2018$Date)
@@ -107,7 +108,13 @@ EPAair_PM_2019_AQS <- mutate(EPAair_PM_2019_sel, AQS_PARAMETER_DESC = "PM2.5")
 
 #6
 
-write.csv(EPAair_2018_sel, row.names = FALSE, file = "./Data/Processed/EPAair_O3_NC2018_processed.csv")
+write.csv(EPAair_2018_sel, file = here("./Data/Processed/EPAair_O3_NC2018_processed.csv"))
+
+write.csv(EPAair_2019_sel, file = here("./Data/Processed/EPAair_O3_NC2019_processed.csv"))
+
+write.csv(EPAair_PM_2018_AQS, file = here("./Data/Processed/EPAair_PM25_NC2018_processed.csv"))
+
+write.csv(EPAair_PM_2019_AQS, file = here("./Data/Processed/EPAair_PM25_NC2019_processed.csv"))
 
 
 ```
