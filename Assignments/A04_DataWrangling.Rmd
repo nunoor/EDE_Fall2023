@@ -107,7 +107,7 @@ EPAair_PM_2019_AQS <- mutate(EPAair_PM_2019_sel, AQS_PARAMETER_DESC = "PM2.5")
 
 #6
 
-write.csv(EPAair_2018_sel, file = "./Data/Processed/EPAair_O3_NC2018_processed.csv", row.names = FALSE)
+write.csv(EPAair_2018_sel, row.names = FALSE, file = "./Data/Processed/EPAair_O3_NC2018_processed.csv")
 
 
 ```
