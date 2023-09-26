@@ -143,7 +143,15 @@ write.csv(EPAair_PM_2019_AQS, file = here("./Data/Processed/EPAair_PM25_NC2019_p
 ```{r}
 #7 
 
+EPAair_all <- rbind(EPAair_2018_sel, EPAair_2019_sel, EPAair_PM_2018_AQS, EPAair_PM_2019_AQS)
+
+#combined all 4 processed documents
+
 #8 
+
+EPAair_all_wrangled <- filter(EPAair_all, Site.Name =  "Linville Falls" | "Durham Armory" | "Leggett" | "Hattie Avenue" | "Clemmons Middle" | "Mendenhall School" | "Frying Pan Mountain" | "West Johnston Co." |"Garingger High School" | "Castle Hayne" | "Pitt Agri. Center" | "Bryson City" | "Millbrook School") %>% group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% filter(DAILY_AQI_VALUE, SITE_LATITUDE, SITE_LONGITUDE) %>% summarise()
+
+#view(EPAair_all)
 
 #9
 
