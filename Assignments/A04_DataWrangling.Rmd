@@ -46,11 +46,20 @@ library(here) #load here
 here() #checked working directory
 
 #1c 
-
-EPAair_2018 <- read.csv(here("./Data/Raw/EPAair_O3_NC2018_raw.csv"), stringsAsFactors = TRUE)
+#loaded the data for the four EPAair datasets ans set strings as factors 
+EPAair_2018 <- read.csv(here("./Data/Raw/EPAair_O3_NC2018_raw.csv"), stringsAsFactors = TRUE) 
 EPAair_2019 <- read.csv(here("./Data/Raw/EPAair_O3_NC2019_raw.csv"), stringsAsFactors = TRUE)
+EPAair_PM_2018 <- read.csv(here("./Data/Raw/EPAair_PM25_NC2018_raw.csv"), stringsAsFactors = TRUE)
+EPAair_PM_2019 <- read.csv(here("./Data/Raw/EPAair_PM25_NC2019_raw.csv"), stringsAsFactors = TRUE)
 
 #2 
+
+#used glimpse to see dimensions of the four previsouly loaded datasets
+
+glimpse(EPAair_2018)
+glimpse(EPAair_2019)
+glimpse(EPAair_PM_2018)
+glimpse(EPAair_PM_2019)
 
 ```
 
@@ -68,11 +77,38 @@ EPAair_2019 <- read.csv(here("./Data/Raw/EPAair_O3_NC2019_raw.csv"), stringsAsFa
 ```{r}
 #3
 
+as.Date(EPAair_2018$Date)
+as.Date(EPAair_2019$Date)
+as.Date(EPAair_PM_2018$Date)
+as.Date(EPAair_PM_2019$Date)
+#changed the date columns to be date objects for the four datasets
+
 #4
+
+EPAair_2018_sel <- select(EPAair_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+#view(EPAair_2018_sel)
+
+EPAair_2019_sel <- select(EPAair_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+#view(EPAair_2019_sel)
+
+EPAair_PM_2018_sel <- select(EPAair_PM_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+#view(EPAair_PM_2018_sel)
+
+EPAair_PM_2019_sel <- select(EPAair_PM_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+#view(EPAair_PM_2019_sel)
 
 #5
 
+EPAair_PM_2018_AQS <- mutate(EPAair_PM_2018_sel, AQS_PARAMETER_DESC = "PM2.5")
+#view(EPAair_PM_2018_AQS)
+
+EPAair_PM_2019_AQS <- mutate(EPAair_PM_2019_sel, AQS_PARAMETER_DESC = "PM2.5")
+#view(EPAair_PM_2019_AQS)
+
 #6
+
+write.csv(EPAair_2018_sel, file = "./Data/Processed/EPAair_O3_NC2018_processed.csv", row.names = FALSE)
+
 
 ```
 
