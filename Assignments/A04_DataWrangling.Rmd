@@ -148,15 +148,22 @@ EPAair_all <- rbind(EPAair_2018_sel, EPAair_2019_sel, EPAair_PM_2018_AQS, EPAair
 
 #8 
 
-EPAair_all_wrangled <- EPAair_all %>% filter(EPAair_all, Site.Name =  "Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain", "West Johnston Co.", "Garingger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School") %>% group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% summarise(meanAQI = mean(DAILY_AQI_VALUE), meanlat = mean(SITE_LATITUDE), meanlong = mean(SITE_LONGITUDE)) %>% mutate(Month = month(EPAair_all$Date) & Year = year(EPAair_all$Date))
+EPAair_all_wrangled <- EPAair_all %>% filter(EPAair_all, Site.Name ==  "Linville Falls" | Site.Name == "Durham Armory" | Site.Name == "Leggett" | Site.Name == "Hattie Avenue" | Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" | Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co." | Site.Name == "Garingger High School" | Site.Name == "Castle Hayne" | Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" | Site.Name == "Millbrook School") %>% group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% summarise(mean(DAILY_AQI_VALUE), mean(SITE_LATITUDE), mean(SITE_LONGITUDE)) %>% mutate(Month = month(EPAair_all$Date) & Year = year(EPAair_all$Date))
 
 #view(EPAair_all)
 
 #9
 
+EPAair_all_wrangled_spread <- spread(EPAair_all_wrangled, ozone, PM)
+EPAair_all_wrangled_spread2 <- pivot_wider(EPAair_all_wrangled, names_from = ozone, values_from = PM)
+
 #10
 
+dim(EPAair_all_wrangled_spread2)
+
 #11
+
+write.csv(EPAair_all_wrangled_spread2, file = here("./Data/Processed/EPAair_O3_PM25_NC1819_processed.csv"))
 
 ```
 
@@ -171,6 +178,7 @@ EPAair_all_wrangled <- EPAair_all %>% filter(EPAair_all, Site.Name =  "Linville 
 
 #12
 
+EPAair_all_wrangled_spread2_summarised <- 
 
 #13
 
