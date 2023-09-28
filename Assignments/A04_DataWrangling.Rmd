@@ -32,25 +32,23 @@ The completed exercise is due on Thursday, Sept 28th @ 5:00pm.
 
 ```{r setup, message = FALSE}
 #1a
-install.packages("tidyverse") #install tidyverse
-install.packages("lubridate") #install lubridate
-install.packages("here") #install here 
 
-library(tidyverse) #load tidyverse
-library(lubridate) #load lubridate    
-library(here) #load here
-
+#loaded the packages I needed
+library(tidyverse)
+library(lubridate)
+library(here)
 
 #1b 
 
-here() #checked working directory
+setwd("/home/guest/R/EDE_Fall2023") #set the console directory
+getwd() #checked working directory
 
 #1c 
 #loaded the data for the four EPAair datasets ans set strings as factors 
-EPAair_2018 <- read.csv(here("./Data/Raw/EPAair_O3_NC2018_raw.csv"), stringsAsFactors = TRUE) 
-EPAair_2019 <- read.csv(here("./Data/Raw/EPAair_O3_NC2019_raw.csv"), stringsAsFactors = TRUE)
-EPAair_PM_2018 <- read.csv(here("./Data/Raw/EPAair_PM25_NC2018_raw.csv"), stringsAsFactors = TRUE)
-EPAair_PM_2019 <- read.csv(here("./Data/Raw/EPAair_PM25_NC2019_raw.csv"), stringsAsFactors = TRUE)
+EPAair_2018 <- here("./Data/Raw/EPAair_O3_NC2018_raw.csv")
+EPAair_2019 <- here("./Data/Raw/EPAair_O3_NC2019_raw.csv")
+EPAair_PM_2018 <- here("./Data/Raw/EPAair_PM25_NC2018_raw.csv")
+EPAair_PM_2019 <- here("./Data/Raw/EPAair_PM25_NC2019_raw.csv")
 
 #2 
 
@@ -148,9 +146,22 @@ EPAair_all <- rbind(EPAair_2018_sel, EPAair_2019_sel, EPAair_PM_2018_AQS, EPAair
 
 #8 
 
-EPAair_all_wrangled <- EPAair_all %>% filter(Site.Name ==  "Linville Falls" | Site.Name == "Durham Armory" | Site.Name == "Leggett" | Site.Name == "Hattie Avenue" | Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" | Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co." | Site.Name == "Garingger High School" | Site.Name == "Castle Hayne" | Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" | Site.Name == "Millbrook School") %>% group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% summarise(mean(DAILY_AQI_VALUE), mean(SITE_LATITUDE), mean(SITE_LONGITUDE)) %>% mutate(Month = month(EPAair_all$Date) & Year = year(EPAair_all$Date))
+EPAair_all_wrangled <- 
+  EPAair_all %>% 
+  filter(Site.Name ==  "Linville Falls" | Site.Name == "Durham Armory" | Site.Name == "Leggett" |
+  Site.Name == "Hattie Avenue" | Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" |
+  Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co." | Site.Name == "Garingger High
+  School" | Site.Name == "Castle Hayne" | Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" |
+  Site.Name == "Millbrook School") %>% 
+  group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>%
+  summarise(MeanAQI = mean(DAILY_AQI_VALUE),
+            MeanLat = mean(SITE_LATITUDE),
+            MeanLong = mean(SITE_LONGITUDE)) %>%
+  mutate(Month = month(Date),
+         Year = year(Date))
 
-#view(EPAair_all)
+
+view(EPAair_all)
 
 #9
 
