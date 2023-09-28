@@ -73,11 +73,11 @@ glimpse(EPAair_PM_2019)
 ```{r Wrangle individual Datasets}
 #3
 
+#changed the date columns to be date objects for the four datasets
 as.Date(EPAair_2018$Date)
 as.Date(EPAair_2019$Date)
 as.Date(EPAair_PM_2018$Date)
 as.Date(EPAair_PM_2019$Date)
-#changed the date columns to be date objects for the four datasets
 
 #4
 #selected out the desired 7 columns for all 4 datasets
@@ -148,9 +148,10 @@ EPAair_all_wrangled <-
   EPAair_all %>% 
   #filter data by the site.names
   filter(Site.Name %in% 
-           c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall
-             School", "Frying Pan Mountain", "West Johnston Co.", "Garinger High School", "Castle Hayne",
-             "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>%
+           c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", 
+           "Mendenhall School", "Frying Pan Mountain", "West Johnston Co.", 
+           "Garinger High School", "Castle Hayne",
+            "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>%
   #grouped data by date, site name, aqs parameter desc, and county
   group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>%
   #calculated mean AQI, mean latitude, and mean longitude
