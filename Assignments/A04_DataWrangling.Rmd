@@ -82,13 +82,17 @@ as.Date(EPAair_PM_2019$Date)
 #4
 #selected out the desired 7 columns for all 4 datasets
 
-EPAair_2018_sel <- select(EPAair_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+EPAair_2018_sel <- 
+  select(EPAair_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
 
-EPAair_2019_sel <- select(EPAair_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+EPAair_2019_sel <- 
+  select(EPAair_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
 
-EPAair_PM_2018_sel <- select(EPAair_PM_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+EPAair_PM_2018_sel <- 
+  select(EPAair_PM_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
 
-EPAair_PM_2019_sel <- select(EPAair_PM_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
+EPAair_PM_2019_sel <- 
+  select(EPAair_PM_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
 
 #5
 #filled all the AQS Parameter values to PM2.5
@@ -143,7 +147,10 @@ EPAair_all <- rbind(EPAair_2018_sel, EPAair_2019_sel, EPAair_PM_2018_AQS, EPAair
 EPAair_all_wrangled <- 
   EPAair_all %>% 
   #filter data by the site.names
-  filter(Site.Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain", "West Johnston Co.", "Garinger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>%
+  filter(Site.Name %in% 
+           c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall
+             School", "Frying Pan Mountain", "West Johnston Co.", "Garinger High School", "Castle Hayne",
+             "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>%
   #grouped data by date, site name, aqs parameter desc, and county
   group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>%
   #calculated mean AQI, mean latitude, and mean longitude
@@ -161,7 +168,8 @@ dim(EPAair_all_wrangled)
 
 #9
 
-EPAair_all_wrangled_spread <- pivot_wider(EPAair_all_wrangled, names_from = AQS_PARAMETER_DESC, values_from = MeanAQI)
+EPAair_all_wrangled_spread <- 
+  pivot_wider(EPAair_all_wrangled, names_from = AQS_PARAMETER_DESC, values_from = MeanAQI)
 #made the AQI values for ozone and PM2.5 two different columns
 
 #10
@@ -170,7 +178,8 @@ dim(EPAair_all_wrangled_spread) #checked dimensions
 
 #11
 
-write.csv(EPAair_all_wrangled_spread, file = here("./Data/Processed/EPAair_O3_PM25_NC1819_processed.csv"))
+write.csv(EPAair_all_wrangled_spread, file = 
+            here("./Data/Processed/EPAair_O3_PM25_NC1819_processed.csv"))
 #saved processed data to the Data/Processed folder
 ```
 
