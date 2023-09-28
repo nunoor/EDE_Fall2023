@@ -70,7 +70,7 @@ glimpse(EPAair_PM_2019)
 
 6. Save all four processed datasets in the Processed folder. Use the same file names as the raw files but replace "raw" with "processed".
 
-```{r}
+```{r Wrangle individual Datasets}
 #3
 
 as.Date(EPAair_2018$Date)
@@ -131,7 +131,7 @@ write.csv(EPAair_PM_2019_AQS, file = here("./Data/Processed/EPAair_PM25_NC2019_p
 
 11. Save your processed dataset with the following file name: "EPAair_O3_PM25_NC1819_Processed.csv"
 
-```{r}
+```{r combine and wrangle datasets}
 #7 
 
 EPAair_all <- rbind(EPAair_2018_sel, EPAair_2019_sel, EPAair_PM_2018_AQS, EPAair_PM_2019_AQS)
@@ -181,7 +181,7 @@ write.csv(EPAair_all_wrangled_spread, file = here("./Data/Processed/EPAair_O3_PM
 
 13. Call up the dimensions of the summary dataset.
 
-```{r}
+```{r Generate Summary tables}
 
 #12
 
