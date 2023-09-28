@@ -194,8 +194,6 @@ EPAair_summarised <- EPAair_all_wrangled_spread %>%
             Mean_PM2.5 = mean(PM2.5, na.rm = TRUE)) %>%
   #removed any rows with empty mean ozone values while keeping the rest of the data intact
   drop_na(Mean_Ozone)
-      
-  
 
 #13
 #checked dimensions
