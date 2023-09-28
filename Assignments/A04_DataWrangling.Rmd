@@ -39,16 +39,14 @@ library(lubridate)
 library(here)
 
 #1b 
-
-setwd("/home/guest/R/EDE_Fall2023") #set the console directory
-getwd() #checked working directory
+here() #checked working directory
 
 #1c 
-#loaded the data for the four EPAair datasets ans set strings as factors 
-EPAair_2018 <- here("./Data/Raw/EPAair_O3_NC2018_raw.csv")
-EPAair_2019 <- here("./Data/Raw/EPAair_O3_NC2019_raw.csv")
-EPAair_PM_2018 <- here("./Data/Raw/EPAair_PM25_NC2018_raw.csv")
-EPAair_PM_2019 <- here("./Data/Raw/EPAair_PM25_NC2019_raw.csv")
+#loaded the data for the four EPAair data sets and set strings as factors 
+EPAair_2018 <- read.csv(here("./Data/Raw/EPAair_O3_NC2018_raw.csv"), stringsAsFactors = TRUE)
+EPAair_2019 <- read.csv(here("./Data/Raw/EPAair_O3_NC2019_raw.csv"), stringsAsFactors = TRUE)
+EPAair_PM_2018 <- read.csv(here("./Data/Raw/EPAair_PM25_NC2018_raw.csv"), stringsAsFactors = TRUE)
+EPAair_PM_2019 <- read.csv(here("./Data/Raw/EPAair_PM25_NC2019_raw.csv"), stringsAsFactors = TRUE)
 
 #2 
 
@@ -82,29 +80,27 @@ as.Date(EPAair_PM_2019$Date)
 #changed the date columns to be date objects for the four datasets
 
 #4
+#selected out the desired 7 columns for all 4 datasets
 
 EPAair_2018_sel <- select(EPAair_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
-#view(EPAair_2018_sel)
 
 EPAair_2019_sel <- select(EPAair_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
-#view(EPAair_2019_sel)
 
 EPAair_PM_2018_sel <- select(EPAair_PM_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
-#view(EPAair_PM_2018_sel)
 
 EPAair_PM_2019_sel <- select(EPAair_PM_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY: SITE_LONGITUDE)
-#view(EPAair_PM_2019_sel)
 
 #5
+#filled all the AQS Parameter values to PM2.5
+EPAair_PM_2018_AQS <- EPAair_PM_2018_sel %>% 
+  mutate(AQS_PARAMETER_DESC = "PM2.5")
 
-EPAair_PM_2018_AQS <- mutate(EPAair_PM_2018_sel, AQS_PARAMETER_DESC = "PM2.5")
-#view(EPAair_PM_2018_AQS)
-
-EPAair_PM_2019_AQS <- mutate(EPAair_PM_2019_sel, AQS_PARAMETER_DESC = "PM2.5")
-#view(EPAair_PM_2019_AQS)
+#filled all the AQS Parameter values to PM2.5
+EPAair_PM_2019_AQS <- EPAair_PM_2019_sel %>%
+  mutate(AQS_PARAMETER_DESC = "PM2.5")
 
 #6
-
+#saved the 4 processed files into the Data/Processsed folder
 write.csv(EPAair_2018_sel, file = here("./Data/Processed/EPAair_O3_NC2018_processed.csv"))
 
 write.csv(EPAair_2019_sel, file = here("./Data/Processed/EPAair_O3_NC2019_processed.csv"))
@@ -112,8 +108,6 @@ write.csv(EPAair_2019_sel, file = here("./Data/Processed/EPAair_O3_NC2019_proces
 write.csv(EPAair_PM_2018_AQS, file = here("./Data/Processed/EPAair_PM25_NC2018_processed.csv"))
 
 write.csv(EPAair_PM_2019_AQS, file = here("./Data/Processed/EPAair_PM25_NC2019_processed.csv"))
-
-
 ```
 
 
@@ -142,40 +136,42 @@ write.csv(EPAair_PM_2019_AQS, file = here("./Data/Processed/EPAair_PM25_NC2019_p
 
 EPAair_all <- rbind(EPAair_2018_sel, EPAair_2019_sel, EPAair_PM_2018_AQS, EPAair_PM_2019_AQS)
 
-#combined all 4 processed documents
+#combined all 4 processed documents into 1
 
 #8 
 
 EPAair_all_wrangled <- 
   EPAair_all %>% 
-  filter(Site.Name ==  "Linville Falls" | Site.Name == "Durham Armory" | Site.Name == "Leggett" |
-  Site.Name == "Hattie Avenue" | Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" |
-  Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co." | Site.Name == "Garingger High
-  School" | Site.Name == "Castle Hayne" | Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" |
-  Site.Name == "Millbrook School") %>% 
+  #filter data by the site.names
+  filter(Site.Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain", "West Johnston Co.", "Garinger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>%
+  #grouped data by date, site name, aqs parameter desc, and county
   group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>%
+  #calculated mean AQI, mean latitude, and mean longitude
   summarise(MeanAQI = mean(DAILY_AQI_VALUE),
             MeanLat = mean(SITE_LATITUDE),
             MeanLong = mean(SITE_LONGITUDE)) %>%
-  mutate(Month = month(Date),
+  #converted date format to mdy
+  mutate(Date = mdy(Date)) %>%
+  #created a month and year column
+  mutate(Month = month(Date), 
          Year = year(Date))
 
-
-view(EPAair_all)
+dim(EPAair_all_wrangled)
+#checked the dimensions 
 
 #9
 
-EPAair_all_wrangled_spread <- spread(EPAair_all_wrangled, ozone, PM)
-EPAair_all_wrangled_spread2 <- pivot_wider(EPAair_all_wrangled, names_from = ozone, values_from = PM)
+EPAair_all_wrangled_spread <- pivot_wider(EPAair_all_wrangled, names_from = AQS_PARAMETER_DESC, values_from = MeanAQI)
+#made the AQI values for ozone and PM2.5 two different columns
 
 #10
 
-dim(EPAair_all_wrangled_spread2)
+dim(EPAair_all_wrangled_spread) #checked dimensions
 
 #11
 
-write.csv(EPAair_all_wrangled_spread2, file = here("./Data/Processed/EPAair_O3_PM25_NC1819_processed.csv"))
-
+write.csv(EPAair_all_wrangled_spread, file = here("./Data/Processed/EPAair_O3_PM25_NC1819_processed.csv"))
+#saved processed data to the Data/Processed folder
 ```
 
 
@@ -189,13 +185,24 @@ write.csv(EPAair_all_wrangled_spread2, file = here("./Data/Processed/EPAair_O3_P
 
 #12
 
-EPAair_all_wrangled_spread2_summarised <- 
+#set vector
+EPAair_summarised <- EPAair_all_wrangled_spread %>%
+  #grouped by site name, month, and year
+  group_by(Site.Name, Month, Year) %>%
+  #calculated the mean ozone and mean PM2.5 values
+  summarise(Mean_Ozone = mean(Ozone, na.rm = TRUE),
+            Mean_PM2.5 = mean(PM2.5, na.rm = TRUE)) %>%
+  #removed any rows with empty mean ozone values while keeping the rest of the data intact
+  drop_na(Mean_Ozone)
+      
+  
 
 #13
-
-
+#checked dimensions
+dim(EPAair_summarised)
 ```
 
 14. Why did we use the function `drop_na` rather than `na.omit`?
 
 > Answer: 
+If we had used na.omit, it may have just deleted any row that had an empty field which is not what we wanted. Drop_na helps to only look at the ozone values and deleate any with no data but keep everything else untouched. 
