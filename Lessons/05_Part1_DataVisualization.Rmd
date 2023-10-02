@@ -86,9 +86,9 @@ O3plot <- ggplot(EPAair) +
 print(O3plot)
 
 # Fix this code
-O3plot2 <- ggplot(EPAair) +
-  geom_point(aes(x = Date, y = Ozone, color = "blue"))
-print(O3plot2)
+#O3plot2 <- ggplot(EPAair) +
+  #geom_point(aes(x = Date, y = Ozone, color = "blue"))
+#print(O3plot2)
 #doing this ends up making it pink bc by adding the color to the aesthetics, you just added a blue layer on top of the black and didnt replace it
 O3plot2 <- ggplot(EPAair) +
   geom_point(aes(x = Date, y = Ozone), color = "blue")
