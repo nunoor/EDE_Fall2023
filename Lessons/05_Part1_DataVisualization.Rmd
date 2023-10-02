@@ -80,6 +80,7 @@ Here are some commonly used aesthetic types that can be manipulated in ggplot:
 # Scatterplot
 ggplot(EPAair, aes(x = Date, y = Ozone)) + 
   geom_point()
+#if i assign color in the geomplot() then it means i color the points ot lines or box and I specify the color itself "blue" or "green". but if i assign a color inside the ggplot aes, then that means i want it to color something based off a specific facttor/colname i.e. color coding my plot. 
 
 O3plot <- ggplot(EPAair) +
   geom_point(aes(x = Date, y = Ozone))
