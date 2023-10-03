@@ -40,11 +40,9 @@ library(cowplot)
 here()
 
 Lake <- read.csv(here("./Data/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"), stringsAsFactors = TRUE)
-#view(Lake)
+view(Lake)
 
 Litter <- read.csv(here("./Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"), stringsAsFactors = TRUE)
-str(Litter)
-Litter$collectDate <- ymd(Litter$collectDate)
 
 #2 
 str(Lake)
@@ -64,6 +62,7 @@ Litter$collectDate <- ymd(Litter$collectDate)
 ```{r build plot theme}
 #3
 
+my_theme <- theme_light(base_size = 14) + theme(axis.title = element_text("orange"), legend.position = "right", plot.background = "purple")
 ```
 
 ## Create graphs
@@ -73,6 +72,8 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 
 ```{r plot total P vs PO4}
 #4 
+
+theme_set(my_theme)
 
 ```
 
