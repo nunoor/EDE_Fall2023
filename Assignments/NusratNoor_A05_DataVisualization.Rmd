@@ -49,6 +49,7 @@ Lake$sampledate <- ymd(Lake$sampledate)
 
 str(Litter)
 Litter$collectDate <- ymd(Litter$collectDate)
+
 ```
 ## Define your theme
 3. Build a theme and set it as your default theme. Customize the look of at least two of the following: 
@@ -61,7 +62,10 @@ Litter$collectDate <- ymd(Litter$collectDate)
 ```{r build plot theme}
 #3
 
-my_theme <- theme_light(base_size = 14) + theme(axis.title = element_text("black"), plot.background = element_rect("gray"))
+my_theme <- theme_light(base_size = 14) + 
+  theme(axis.title = element_text("black"), 
+        plot.background = element_rect("gray"), 
+        axis.text = element_text("black"))
 
 theme_set(my_theme)
 ```
@@ -73,13 +77,13 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 
 ```{r plot total P vs PO4}
 #4 
-
-LakePlot1 <- ggplot(Lake,aes(x = po4, y = tp_ug, color = lakename)) +
+LakePlot <- ggplot(Lake,aes(x = po4, y = tp_ug, color = lakename)) +
   geom_point() +
-  geom_smooth(method = lm, color = "black") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
   xlim(0, 50) +
   ylim(0, 150) +
-  print(LakePlot1)
+  labs(x = "Phosphate (ug)", y = "Total Phosphorus (ug)", title = "Total Phosphorus by Phosphate", color = "Lake Name")
+print(LakePlot)
 
 ```
 
@@ -97,32 +101,37 @@ Tip:
 temp_plot <- ggplot(Lake, aes(x = month.abb[month], y = temperature_C, color = lakename)) +
   geom_boxplot() +
   scale_x_discrete(limits = month.abb) +
-  print(temp_plot)
+  labs(x = "Month", y = "Temperature(C)", title = "Temperature by Month", color = "Lake Name")
+print(temp_plot)
 
 TP_plot <- ggplot(Lake, aes(x = month.abb[month], y = tp_ug, color = lakename)) +
   geom_boxplot() +
   scale_x_discrete(limits = month.abb) +
-  print(TP_plot)
+  labs(x = "Month", y = "Total Phosphorus(ug)", title = "Total Phosphorus by Month", color = "Lake Name")
+print(TP_plot)
 
 TN_plot <- ggplot(Lake, aes(x = month.abb[month], y = tn_ug, color = lakename)) +
   geom_boxplot() +
   scale_x_discrete(limits = month.abb) +
-  print(TN_plot)
+  labs(x = "Month", y = "Total Nitrogen(ug)", title = "Total Nitrogen by Month", color = "Lake Name")
+print(TN_plot)
 
-plot_all <- plot_grid(temp_plot + theme(legend.position = "none"),
-                      TP_plot + theme(legend.position = "none"),
-                      TN_plot + theme(legend.position = "none"), 
-                      nrow = 3, align = "h") +
 
-print(plot_all)  
-#xlim(0, 10) +
- # ylim(0, 3000)
+legendtemp <- get_legend(temp_plot)
+legendTP <- get_legend(TP_plot)
+
+plot_all <- plot_grid(temp_plot + theme(legend.position = "none"), 
+                      TP_plot + theme(legend.position = "none"), 
+                      TN_plot + theme(legend.position = "bottom"), 
+                      nrow = 3, rel_heights = c(.7, .7, 1)) 
+print(plot_all)
 
 ```
 
 Question: What do you observe about the variables of interest over seasons and between lakes? 
 
 > Answer: 
+I notice that warmer months have higher levels of total phosphorus and total nitrogen and also have a wider spread. The average total nitrogen and phosphorus levels in Peter lake is higher and overall, has more spread. 
 
 6. [Niwot Ridge] Plot a subset of the litter dataset by displaying only the "Needles" functional group. Plot the dry mass of needle litter by date and separate by NLCD class with a color aesthetic. (no need to adjust the name of each land use)
 
@@ -130,12 +139,20 @@ Question: What do you observe about the variables of interest over seasons and b
 
 ```{r Plot litter}
 #6
-
+Needles1 <- ggplot(subset(Litter, functionalGroup == "Needles"), aes(x = collectDate, y = dryMass, color = nlcdClass)) +
+  geom_point() +
+  labs(x = "Date", y = "Dry Mass", title = "Dry Mass of Needles by Date", color = "NLCD Class")
+print(Needles1)
 
 #7
-
+Needles2 <- ggplot(subset(Litter, functionalGroup == "Needles"), aes(x = collectDate, y = dryMass)) +
+  geom_point() +
+  facet_wrap(vars(nlcdClass), ncol = 3) +
+  labs(x = "Date", y = "Dry Mass", title = "Dry Mass of Needles by Date")
+print(Needles2)
 
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
 > Answer:
+Plot 7 is  more effective because it separates the data much more clearly so that the points not overlapping  as much as they are in plot 6. 
