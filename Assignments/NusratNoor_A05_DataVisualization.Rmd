@@ -62,7 +62,7 @@ Litter$collectDate <- ymd(Litter$collectDate)
 ```{r build plot theme}
 #3
 
-my_theme <- theme_light(base_size = 14) + theme(axis.title = element_text("black"), legend.position = "right")
+my_theme <- theme_light(base_size = 14) + theme(axis.title = element_text("black"), plot.background = element_rect("gray"))
 
 theme_set(my_theme)
 ```
@@ -75,14 +75,13 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 ```{r plot total P vs PO4}
 #4 
 
-LakePlot1 <- ggplot(Lake,aes(x = tp_ug, y = po4, color = lakename)) +
+LakePlot1 <- ggplot(Lake,aes(x = po4, y = tp_ug, color = lakename)) +
   geom_point() +
-  geom_smooth(method = lm, color = "black")
-  xlim(0, 150) +
-  ylim(0, 50)
-print(LakePlot1)
+  geom_smooth(method = lm, color = "black") +
+  xlim(0, 50) +
+  ylim(0, 150) +
+  print(LakePlot1)
 
-#keeps making me enter token every other day or so when i push
 ```
 
 
@@ -95,20 +94,29 @@ Tip:
 ```{r Create boxplots}
 #5 
 #why do we sometimes put aes in ggplot or in geom depending on the plot type?
-temp_plot <- ggplot(Lake, aes(x = month, y = temperature_C, color = lakename)) +
-  geom_boxplot()
-print(temp_plot)
 
-TP_plot <- ggplot(Lake, aes(x = month, y = tp_ug, color = lakename)) +
-  geom_boxplot()
-print(TP_plot)
+temp_plot <- ggplot(Lake, aes(x = month.abb[month], y = temperature_C, color = lakename)) +
+  geom_boxplot() +
+  scale_x_discrete(limits = month.abb) +
+  print(temp_plot)
 
-TN_plot <- ggplot(Lake, aes(x = month, y = tn_ug, color = lakename)) +
-  geom_boxplot()
-print(TN_plot)
+TP_plot <- ggplot(Lake, aes(x = month.abb[month], y = tp_ug, color = lakename)) +
+  geom_boxplot() +
+  scale_x_discrete(limits = month.abb) +
+  print(TP_plot)
 
-plot_all <- plot_grid(temp_plot, TP_plot, TN_plot, nrow = 3, align = "h") 
-  #xlim(0, 10) +
+TN_plot <- ggplot(Lake, aes(x = month.abb[month], y = tn_ug, color = lakename)) +
+  geom_boxplot() +
+  scale_x_discrete(limits = month.abb) +
+  print(TN_plot)
+
+plot_all <- plot_grid(temp_plot + theme(legend.position = "none"),
+                      TP_plot + theme(legend.position = "none"),
+                      TN_plot + theme(legend.position = "none"), 
+                      nrow = 3, align = "h") +
+
+print(plot_all)  
+#xlim(0, 10) +
  # ylim(0, 3000)
 
 ```
