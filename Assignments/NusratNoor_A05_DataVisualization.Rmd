@@ -40,10 +40,9 @@ library(cowplot)
 here()
 
 Lake <- read.csv(here("./Data/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"), stringsAsFactors = TRUE)
-view(Lake)
 
 Litter <- read.csv(here("./Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"), stringsAsFactors = TRUE)
-view(Litter)
+
 #2 
 str(Lake)
 Lake$sampledate <- ymd(Lake$sampledate)
