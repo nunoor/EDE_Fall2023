@@ -32,23 +32,33 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 
 ```{r initialize project}
 #1 
+#install.packages("tidyverse")
+#install.packages("lubridate")
+#install.packages("here")
+#install.packages("cowplot")
+
+#loading packages
 library(tidyverse)
 library(lubridate)
 library(here)
 library(cowplot)
 
-here()
+here() #checked home directory
 
-Lake <- read.csv(here("./Data/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"), stringsAsFactors = TRUE)
+Lake <- read.csv(here("./Data/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"), 
+                 stringsAsFactors = TRUE)
+#loaded Lake dataset
 
-Litter <- read.csv(here("./Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"), stringsAsFactors = TRUE)
+Litter <- read.csv(here("./Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"), 
+                   stringsAsFactors = TRUE)
+#loaded Litter dataset
 
 #2 
-str(Lake)
-Lake$sampledate <- ymd(Lake$sampledate)
+str(Lake) #checked structure of dataset to see date format (it was not date format)
+Lake$sampledate <- ymd(Lake$sampledate) #changed format to date
 
-str(Litter)
-Litter$collectDate <- ymd(Litter$collectDate)
+str(Litter) #checked structure of dataset to see date format (it was not date format)
+Litter$collectDate <- ymd(Litter$collectDate) #changed format to date
 
 ```
 ## Define your theme
@@ -62,11 +72,12 @@ Litter$collectDate <- ymd(Litter$collectDate)
 ```{r build plot theme}
 #3
 
-my_theme <- theme_light(base_size = 14) + 
-  theme(axis.title = element_text("black"), 
-        plot.background = element_rect("gray"), 
-        axis.text = element_text("black"), legend.position = "right")
-
+my_theme <- theme_classic() + 
+  theme(axis.title = element_text("black"), #made axis titles black
+        plot.background = element_rect("gray"), #made plot background gray
+        axis.text = element_text("black"), #made axis text black
+        legend.position = "right") #set legend position to the right of plot
+#set theme
 theme_set(my_theme)
 ```
 
@@ -77,13 +88,15 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 
 ```{r plot total P vs PO4}
 #4 
-LakePlot <- ggplot(Lake,aes(x = po4, y = tp_ug, color = lakename)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
-  xlim(0, 50) +
-  ylim(0, 150) +
-  labs(x = "Phosphate (ug)", y = "Total Phosphorus (ug)", title = "Total Phosphorus by Phosphate", color = "Lake Name")
-print(LakePlot)
+
+LakePlot <- ggplot(Lake, aes(x = po4, y = tp_ug, color = lakename)) + #created plot for total phosphorus and phosphate
+  geom_point(na.rm = TRUE) + #got rid of NAs 
+  geom_smooth(method = "lm", se = FALSE, color = "black") + #added a best fit line and made it black
+  xlim(c(0, 50)) + #set limits for x-axis
+  ylim(c(0, 150)) + #set limits for y-axis
+  labs(x = "Phosphate (ug)", y = "Total Phosphorus (ug)", title = "Total Phosphorus by Phosphate", color = "Lake Name") #changed labels
+
+LakePlot #called back the plot
 
 ```
 
@@ -96,38 +109,40 @@ Tip:
 
 ```{r Create boxplots}
 #5 
-#why do we sometimes put aes in ggplot or in geom depending on the plot type?
 
 temp_plot <- ggplot(Lake, aes(x = month.abb[month], y = temperature_C, color = lakename)) +
-  geom_boxplot() +
-  scale_x_discrete(limits = month.abb) +
-  labs(x = "Month", y = "Temperature(C)", title = "Temperature by Month", color = "Lake Name")
-print(temp_plot)
+  geom_boxplot() + #made boxplot of temperatures by date collected and separated by lakename
+  scale_x_discrete(limits = month.abb) + #made x-axis labels show every month in abbreviated form
+  labs(x = "Month", y = "Temperature(C)", title = "Temperature by Month", color = "Lake Name") #changed labels
+print(temp_plot) #called back plot
 
 TP_plot <- ggplot(Lake, aes(x = month.abb[month], y = tp_ug, color = lakename)) +
-  geom_boxplot() +
-  scale_x_discrete(limits = month.abb) +
-  labs(x = "Month", y = "Total Phosphorus(ug)", title = "Total Phosphorus by Month", color = "Lake Name")
-print(TP_plot)
+  geom_boxplot() + #created boxplot of total phosphorus by month and separated by lakename
+  scale_x_discrete(limits = month.abb) + #made x-axis labels show every month in abbreviated form
+  labs(x = "Month", y = "Total Phosphorus(ug)", title = "Total Phosphorus by Month", color = "Lake Name") #changed labels
+print(TP_plot) #called back the plot
 
 TN_plot <- ggplot(Lake, aes(x = month.abb[month], y = tn_ug, color = lakename)) +
-  geom_boxplot() +
-  scale_x_discrete(limits = month.abb) +
-  labs(x = "Month", y = "Total Nitrogen(ug)", title = "Total Nitrogen by Month", color = "Lake Name")
-print(TN_plot)
+  geom_boxplot() + #created boxplot of total nitrogen by month and separated by lakename
+  scale_x_discrete(limits = month.abb) + ##made x-axis labels show every month in abbreviated form
+  labs(x = "Month", y = "Total Nitrogen(ug)", title = "Total Nitrogen by Month", color = "Lake Name") #changed labels
+print(TN_plot) #called back plot
 
-plot_all <- plot_grid(temp_plot + theme(legend.position = "none"), 
-                      TP_plot + theme(legend.position = "none"), 
-                      TN_plot + theme(legend.position = "none"), 
-                      nrow = 3, align = "hv", rel_heights = c(1, 1, 1)) + 
-  theme(axis.text = element_text(size = 10))
+#created cowplot of all three above plots
+plot_all <- plot_grid(
+  temp_plot + theme(legend.position = "none"), #got rid of legend
+  TP_plot + theme(legend.position = "none"), #got rid of legend
+  TN_plot + theme(legend.position = "none"), #got rid of legend
+  nrow = 3, align = 'hv', rel_heights = c(1,1,1)) + #set number of rows, aligned horizontally and vertically, and set relative heights of the plots
+  theme(axis.text = element_text(size = 10)) #changed axis text to size 10
 
-legend_all <- get_legend(plot_all)
+legend_all <- get_legend(plot_all) #extracted out the legends
 
-plot_all <- plot_grid(plot_all, legend_all, ncol = 2, rel_widths = c(1, 0.25)) +
-  theme(legend.position = "right")
+plot_all <- plot_grid(plot_all,
+                      legend_all, rel_widths = c(1,0.25)
+) #added legend to the cowplot
 
-print(plot_all)
+plot_all #called back the plot
 
 ```
 
@@ -142,17 +157,18 @@ I notice that warmer months have higher levels of total phosphorus and total nit
 
 ```{r Plot litter}
 #6
-Needles1 <- ggplot(subset(Litter, functionalGroup == "Needles"), aes(x = collectDate, y = dryMass, color = nlcdClass)) +
-  geom_point() +
-  labs(x = "Date", y = "Dry Mass", title = "Dry Mass of Needles by Date", color = "NLCD Class")
-print(Needles1)
+Needles1 <- ggplot(subset(Litter, functionalGroup == "Needles"), 
+                   aes(x = collectDate, y = dryMass, color = nlcdClass)) +
+  geom_point() + #plotted a subset of only Needles, set axis, and separated by ncld class
+  labs(x = "Date", y = "Dry Mass", title = "Dry Mass of Needles by Date", color = "NLCD Class") #changed labels 
+print(Needles1) #called back the plot
 
 #7
 Needles2 <- ggplot(subset(Litter, functionalGroup == "Needles"), aes(x = collectDate, y = dryMass)) +
-  geom_point() +
-  facet_wrap(vars(nlcdClass), ncol = 3) +
-  labs(x = "Date", y = "Dry Mass", title = "Dry Mass of Needles by Date")
-print(Needles2)
+  geom_point() + #plotted a subset of only Needles and set axis
+  facet_wrap(vars(nlcdClass), ncol = 3) + #separated the ncld classes into three facets 
+  labs(x = "Date", y = "Dry Mass", title = "Dry Mass of Needles by Date") #changed labels and title
+print(Needles2) #called out the plot
 
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
