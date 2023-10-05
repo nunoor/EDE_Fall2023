@@ -125,23 +125,24 @@ print(temp_plot) #called back plot
 TP_plot <- ggplot(Lake, aes(x = month.abb[month], y = tp_ug, color = lakename)) +
   geom_boxplot() + #created boxplot of total phosphorus by month and separated by lakename
   scale_x_discrete(limits = month.abb) + #made x-axis labels show every month in abbreviated form
-  labs(x = "Month", y = "Total Phosphorus(ug)", title = "Total Phosphorus by Month",
+  labs(x = "Month", y = "Total P (ug)", title = "Total Phosphorus by Month",
        color = "Lake Name") #changed labels
 print(TP_plot) #called back the plot
 
 TN_plot <- ggplot(Lake, aes(x = month.abb[month], y = tn_ug, color = lakename)) +
   geom_boxplot() + #created boxplot of total nitrogen by month and separated by lakename
   scale_x_discrete(limits = month.abb) + ##made x-axis labels show every month in abbreviated form
-  labs(x = "Month", y = "Total Nitrogen(ug)", title = "Total Nitrogen by Month", color = "Lake Name") 
+  labs(x = "Month", y = "Total N (ug)", title = "Total Nitrogen by Month", color = "Lake Name") 
 #changed labels
 print(TN_plot) #called back plot
 
 #created cowplot of all three above plots
+
 plot_all <- plot_grid(
   temp_plot + theme(legend.position = "none"), #got rid of legend
   TP_plot + theme(legend.position = "none"), #got rid of legend
-  TN_plot + theme(legend.position = "bottom"), #got rid of legend
-  nrow = 3, align = 'h') + 
+  TN_plot + theme(legend.position = "bottom"), 
+  nrow = 3, align = 'h', rel_heights = c(1, 1, 1.25)) + 
   #set number of rows, aligned horizontally
   theme(axis.text = element_text(size = 10)) #changed axis text to size 10
 
