@@ -65,7 +65,7 @@ Litter$collectDate <- ymd(Litter$collectDate)
 my_theme <- theme_light(base_size = 14) + 
   theme(axis.title = element_text("black"), 
         plot.background = element_rect("gray"), 
-        axis.text = element_text("black"))
+        axis.text = element_text("black"), legend.position = "right")
 
 theme_set(my_theme)
 ```
@@ -116,14 +116,17 @@ TN_plot <- ggplot(Lake, aes(x = month.abb[month], y = tn_ug, color = lakename)) 
   labs(x = "Month", y = "Total Nitrogen(ug)", title = "Total Nitrogen by Month", color = "Lake Name")
 print(TN_plot)
 
-
-legendtemp <- get_legend(temp_plot)
-legendTP <- get_legend(TP_plot)
-
 plot_all <- plot_grid(temp_plot + theme(legend.position = "none"), 
                       TP_plot + theme(legend.position = "none"), 
-                      TN_plot + theme(legend.position = "bottom"), 
-                      nrow = 3, rel_heights = c(.7, .7, 1)) 
+                      TN_plot + theme(legend.position = "none"), 
+                      nrow = 3, align = "hv", rel_heights = c(1, 1, 1)) + 
+  theme(axis.text = element_text(size = 10))
+
+legend_all <- get_legend(plot_all)
+
+plot_all <- plot_grid(plot_all, legend_all, ncol = 2, rel_widths = c(1, 0.25)) +
+  theme(legend.position = "right")
+
 print(plot_all)
 
 ```
