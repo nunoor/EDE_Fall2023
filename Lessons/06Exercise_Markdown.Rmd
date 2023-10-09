@@ -1,4 +1,6 @@
 ---
+#this is the yaml, gives instructions on where title and author, etc. should be; used to set parameters
+#.r files are pure r code and doesnt have a yaml
 title: "Exercise: Markdown"
 author: "Environmental Data Analytics | John Fay and Luana Lima "
 output: pdf_document
