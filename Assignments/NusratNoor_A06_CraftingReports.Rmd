@@ -51,7 +51,6 @@ library(tidyverse);library(lubridate);library(here);library(knitr)
 epa_data <- read.csv(here("./Data/Processed_KEY/EPAair_O3_PM25_NC1819_Processed.csv"),
   stringsAsFactors = TRUE) %>% 
   mutate(Date = ymd(Date))
-view(epa_data)
 ```
 
 ---
