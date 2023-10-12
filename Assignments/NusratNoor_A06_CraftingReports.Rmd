@@ -21,6 +21,7 @@ toc: true
 1.  Be sure to **answer the questions** in this assignment document.
 1.  When you have completed the assignment, **Knit** the text and code into a single PDF file.
 1.  **Be sure that you also commit and push your final Rmd document to your GitHub account**.
+\newpage
 
 ## Task 1 - Basic Markdown
 
@@ -67,6 +68,7 @@ Customize the chunk options such that the code is run but is not displayed in th
 >
 > -   If your output table spans across two pages, try inserting a page break in the markdown just before your code chunk.
 
+\newpage
 
 ```{r data.summary, echo=FALSE}
 #Compute mean PM2.5 concentration for each county, sorted by value
@@ -96,7 +98,7 @@ knitr::kable(summary_Ozone, caption = "Mean Ozone", col.names = c("County", "$\\
 
 Create two separate code chunks that create boxplots of the distribution of Ozone levels by month using, one for only records collected in 2018 and one for records in 2019. Customize the chunk options such that the final figures are displayed but not the code used to generate the figures. In addition, align the plots on the left side of the page and set the figure heights so both plots fit on the same page with minimal space remaining. Lastly, add a `fig.cap` chunk option to add a caption (title) to your plot that will display underneath the figure.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap= "Monthly Ozone (2018)"}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap= "Monthly Ozone (2018)", fig.align='left', fig.dim= c(5,4)}
 ozone_2018 <- filter(epa_data, Year == 2018)
 
 ozone_2018_box <- ggplot(ozone_2018, aes(x = month.abb[Month], y = Ozone)) +
@@ -106,7 +108,7 @@ ozone_2018_box <- ggplot(ozone_2018, aes(x = month.abb[Month], y = Ozone)) +
 print(ozone_2018_box)  
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap= "Monthly Ozone (2019)"}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap= "Monthly Ozone (2019)", fig.align='left', fig.dim= c(5,4)}
 ozone_2019 <- filter(epa_data, Year == 2019)
 
 ozone_2019_box <- ggplot(ozone_2019, aes(x = month.abb[Month], y = Ozone)) +
@@ -124,3 +126,4 @@ Add a table of contents to your document and knit to a PDF. Submit your PDF to S
 
 ## Git Repository
 
+<https://github.com/nunoor/EDE_Fall2023>
