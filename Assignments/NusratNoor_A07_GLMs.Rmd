@@ -35,10 +35,11 @@ library(here)
 here()
 #checked the working directory
 
-lter <- read.csv(here("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"), stringsAsFactors = TRUE)
-lter$sampledate <- as.Date(lter$sampledate , format = "%Y-%m-%d")
+Lter <- read.csv(here("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"), stringsAsFactors = TRUE)
+Lter$sampledate <- as.Date(Lter$sampledate , format = "%Y-%m-%d")
 #imported the raw file and set date columns to date objects
 view(lter$sampledate)
+
 #2
 my_theme <- theme_light(base_size = 14) +
   theme(axis.title = element_text(color = "darkgreen"), 
