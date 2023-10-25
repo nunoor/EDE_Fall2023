@@ -38,11 +38,10 @@ here()
 Lter <- read.csv(here("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"), stringsAsFactors = TRUE)
 Lter$sampledate <- as.Date(Lter$sampledate, format = "%m/%d/%y")
 #imported the raw file and set date columns to date objects
-view(Lter)
+
 #2
 my_theme <- theme_light(base_size = 14) +
-  theme(axis.title = element_text(color = "darkgreen"), 
-        legend.position = "bottom", plot.background = element_rect(color = "darkgrey"))
+  theme(axis.title = element_text(color = "darkgreen"), axis.text = element_text(color = "darkgreen"), legend.position = "bottom", panel.background = element_rect(fill = "grey"))
 theme_set(my_theme)
 #created theme and set it as default  
 
@@ -78,7 +77,7 @@ Lter_tbd <- ggplot(Lter_wr, aes(x = depth, y = temperature_C)) +
   geom_smooth(method = "lm", color = "darkgreen") +
   labs(x = "Depth in Meters", y = "Temperature in Celsius")
 print(Lter_tbd)
-#made a scatterplot of temperature by depth and added a linear model line
+#made a scatterplot of temperature by depth and added a linear model line, added ylimits and changed the labels to make it look nicer
 ```
 
 
