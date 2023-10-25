@@ -25,7 +25,7 @@ Litter <- read.csv(here("Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed
 
 # Set date to date format
 Litter$collectDate <- as.Date(Litter$collectDate , format = "%Y-%m-%d")
-
+view(Litter$collectDate)
 # Set theme
 mytheme <- theme_classic(base_size = 14) +
   theme(axis.text = element_text(color = "black"), 
