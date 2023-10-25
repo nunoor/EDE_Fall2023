@@ -141,13 +141,15 @@ par(mfrow = c(1,1))
 
 ```{r anova.model}
 #12
-
-
+Lter_anova <- aov(data = Lter_wr, temperature_C ~ lakename)
+summary(Lter_anova)
+Lter_anova2 <- lm(data = Lter_wr, temperature_C ~ lakename)
+summary(Lter_anova2)
 ```
 
 13. Is there a significant difference in mean temperature among the lakes? Report your findings. 
 
-> Answer: 
+> Answer: The p-value is <2.2e-16 meaning there is a significant difference in mean temperature among the lakes.
 
 
 
@@ -155,7 +157,11 @@ par(mfrow = c(1,1))
 
 ```{r scatterplot.2}
 #14.
-
+ggplot(Lter_wr, aes(x=depth, y=temperature_C, color = lakename)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  ylim(0,35) +
+  labs(x = "Depth in Meters", y = "Temperature in Celcius")
 
 ```
 
@@ -163,7 +169,7 @@ par(mfrow = c(1,1))
 
 ```{r tukey.test}
 #15
-
+TukeyHSD(Lter_anova)
 
 ```
 
@@ -182,7 +188,11 @@ par(mfrow = c(1,1))
 18. Wrangle the July data to include only records for Crampton Lake and Ward Lake. Run the two-sample T-test on these data to determine whether their July temperature are same or different. What does the test say? Are the mean temperatures for the lakes equal? Does that match you answer for part 16?
 
 ```{r t.test}
-
+Lter_wr2 <- filter(Lter_wr, lakename == "Crampton Lake" | lakename == "Ward Lake")
+Lter_2sample <- t.test(Lter_wr2$temperature_C ~ Lter_wr2$lakename)
+Lter_2sample
+Lter_2sample_lm <- lm(Lter_wr2$temperature_C ~ Lter_wr2$lakename)
+summary(Lter_2sample_lm)
 ```
 
 >Answer: 
