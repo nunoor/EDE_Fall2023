@@ -35,13 +35,20 @@ library(here)
 here()
 #checked the working directory
 
-Lter <- read.csv(here("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"), stringsAsFactors = TRUE)
+Lter <- read.csv(here("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"),
+                 stringsAsFactors = TRUE)
 Lter$sampledate <- as.Date(Lter$sampledate, format = "%m/%d/%y")
 #imported the raw file and set date columns to date objects
 
 #2
 my_theme <- theme_light(base_size = 14) +
-  theme(axis.title = element_text(color = "darkgreen"), axis.text = element_text(color = "darkgreen"), legend.position = "right", legend.background = element_rect(fill = "darkgreen"), panel.background = element_rect(fill = "lightgrey"), panel.grid = element_line(color = "black"))
+  theme(axis.title = element_text(color = "darkgreen"), 
+        axis.text = element_text(color = "darkgreen"), 
+        title = element_text(color = "darkgreen"), 
+        legend.position = "right", 
+        legend.background = element_rect(fill = "darkgreen"), 
+        panel.background = element_rect(fill = "lightgrey"), 
+        panel.grid = element_line(color = "black"))
 theme_set(my_theme)
 #created theme and set it as default  
 
@@ -74,10 +81,12 @@ Lter_wr <- Lter %>%
 Lter_tbd <- ggplot(Lter_wr, aes(x = depth, y = temperature_C)) +
   geom_point() +
   ylim(0, 35) +
-  geom_smooth(method = "lm", color = "darkgreen") +
-  labs(x = "Depth in Meters", y = "Temperature in Celsius")
+  geom_smooth(method = "lm", color = "red") +
+  labs(x = "Depth in Meters", y = "Temperature in Celsius", 
+       title = "Temperature by Depth in July")
 print(Lter_tbd)
-#made a scatterplot of temperature by depth and added a linear model line, added ylimits and changed the labels to make it look nicer
+#made a scatterplot of temperature by depth and added a linear model line, added ylimits 
+#changed the labels to make it look nicer
 ```
 
 
@@ -119,7 +128,8 @@ TAIC <- lm(data = Lter_wr, temperature_C ~ year4 + daynum + depth) #performed li
 step(TAIC) #conducted stepwise regression
 
 #10
-Treg <- lm(data = Lter_wr, temperature_C ~ year4 + daynum + depth) #ran multiple regression for the recommended set of variables
+Treg <- lm(data = Lter_wr, temperature_C ~ year4 + daynum + depth) 
+#ran multiple regression for the recommended set of variables
 summary(Treg)
 par(mfrow = c(2,2), mar = c(4,4,4,4))
 plot(Treg)
@@ -160,8 +170,10 @@ ggplot(Lter_wr, aes(x=depth, y=temperature_C, color = lakename)) +
   geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE) +
   ylim(0,35) +
-  labs(x = "Depth in Meters", y = "Temperature in Celcius", color = "Lakename") +
-  theme(legend.text = element_text(color = "white", size = 9), legend.title = element_text(color = "white", size = 9))
+  labs(x = "Depth in Meters", y = "Temperature in Celcius", color = "Lakename",
+       title = "Lake Temperature v Depth in July") +
+  theme(legend.text = element_text(color = "white", size = 9), 
+        legend.title = element_text(color = "white", size = 9))
   
 
 ```
