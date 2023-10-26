@@ -161,7 +161,7 @@ ggplot(Lter_wr, aes(x=depth, y=temperature_C, color = lakename)) +
   geom_smooth(method = "lm", se = FALSE) +
   ylim(0,35) +
   labs(x = "Depth in Meters", y = "Temperature in Celcius", color = "Lakename") +
-  theme(legend.text = element_text(color = "white"), legend.title = element_text(color = "white"))
+  theme(legend.text = element_text(color = "white", size = 9), legend.title = element_text(color = "white", size = 9))
   
 
 ```
