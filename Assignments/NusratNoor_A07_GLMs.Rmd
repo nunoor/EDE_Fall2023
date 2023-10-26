@@ -41,7 +41,7 @@ Lter$sampledate <- as.Date(Lter$sampledate, format = "%m/%d/%y")
 
 #2
 my_theme <- theme_light(base_size = 14) +
-  theme(axis.title = element_text(color = "darkgreen"), axis.text = element_text(color = "darkgreen"), legend.position = "right", legend.background = element_rect(fill = "darkgreen"), panel.background = element_rect(fill = "grey"))
+  theme(axis.title = element_text(color = "darkgreen"), axis.text = element_text(color = "darkgreen"), legend.position = "right", legend.background = element_rect(fill = "darkgreen"), panel.background = element_rect(fill = "lightgrey"), panel.grid = element_line(color = "black"))
 theme_set(my_theme)
 #created theme and set it as default  
 
@@ -90,7 +90,7 @@ print(Lter_tbd)
 
 ```{r linear.regression}
 #7
-Lter_reg <- lm(data = Lter_wr, depth ~ temperature_C) #performed a linear regression
+Lter_reg <- lm(data = Lter_wr, temperature_C ~ depth) #performed a linear regression
 summary(Lter_reg) #checked the summary
 par(mfrow = c(2,2), mar = c(4,4,4,4)) #set plot view to show all 4 plots at the same time
 plot(Lter_reg) #plotted the regression
@@ -100,7 +100,7 @@ par(mfrow = c(1,1)) #reset the plot view
 
 8. Interpret your model results in words. Include how much of the variability in temperature is explained by changes in depth, the degrees of freedom on which this finding is based, and the statistical significance of the result. Also mention how much temperature is predicted to change for every 1m change in depth. 
 
-> Answer: The r-squared value is 0.7387 meaning that there is a strong correlation and that roughly 73.9% of the variability in temperature is explained by changes in depth. The degrees of freedom is 9726. The p-value is 2.2e-16 meaning it is statistically significant and we can reject the null hypothesis. 
+> Answer: The r-squared value is 0.7387 meaning that there is a strong correlation and that roughly 73.9% of the variability in temperature is explained by changes in depth. The degrees of freedom is 9726. The p-value is 2.2e-16 meaning it is statistically significant and we can reject the null hypothesis. For every 1 meter of depth, the temperature is expected to change by -1.946. 
 
 
 ---
@@ -129,7 +129,7 @@ par(mfrow = c(1,1))
 
 11. What is the final set of explanatory variables that the AIC method suggests we use to predict temperature in our multiple regression? How much of the observed variance does this model explain? Is this an improvement over the model using only depth as the explanatory variable?
 
-> Answer: The AIC method suggested the use of the variables, year4, daynum, and depth. The r-squared increased to 0.7411 meaning that 74% of the observed variance is explained by the variables. This increased very little from the previous model but not by much. 
+> Answer: The AIC method suggested the use of the variables, year4, daynum, and depth. The r-squared increased to 0.7411 meaning that 74% of the observed variance is explained by the variables. This improved from the previous model but not by much. 
 
 
 
@@ -157,11 +157,12 @@ summary(Lter_anova2)
 ```{r scatterplot.2}
 #14.
 ggplot(Lter_wr, aes(x=depth, y=temperature_C, color = lakename)) +
-  geom_point(alpha = 0.5, size = 0.5) +
+  geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE) +
   ylim(0,35) +
   labs(x = "Depth in Meters", y = "Temperature in Celcius", color = "Lakename") +
-  theme(legend.key.size = unit(.05, "cm"))
+  theme(legend.text = element_text(color = "white"), legend.title = element_text(color = "white"))
+  
 
 ```
 
@@ -169,19 +170,22 @@ ggplot(Lter_wr, aes(x=depth, y=temperature_C, color = lakename)) +
 
 ```{r tukey.test}
 #15
-TukeyHSD(Lter_anova)
+TukeyHSD(Lter_anova) #computed Tukey HSD
 
+Lter_anova_group <- HSD.test(Lter_anova, "lakename", group = TRUE) 
+#extracted groupings for pairwise relationships
+Lter_anova_group
 ```
 
 16.From the findings above, which lakes have the same mean temperature, statistically speaking, as Peter Lake? Does any lake have a mean temperature that is statistically distinct from all the other lakes?
 
->Answer:
+>Answer: Paul Lake was the only lake that had statistically same means as Peter Lake. Central Long Lake's mean was statistically distict from all the other lakes. 
 
  
 
 17. If we were just looking at Peter Lake and Paul Lake. What's another test we might explore to see whether they have distinct mean temperatures? 
 
->Answer: 
+>Answer: We would do a two sample t-test.
 
 
 
@@ -189,10 +193,10 @@ TukeyHSD(Lter_anova)
 
 ```{r t.test}
 Lter_wr2 <- filter(Lter_wr, lakename == "Crampton Lake" | lakename == "Ward Lake")
-Lter_2sample <- t.test(Lter_wr2$temperature_C ~ Lter_wr2$lakename)
+#filtered out only records for crampton lake and ward lake. 
+Lter_2sample <- t.test(Lter_wr2$temperature_C ~ Lter_wr2$lakename) #conducted two sample t-test
 Lter_2sample
-Lter_2sample_lm <- lm(Lter_wr2$temperature_C ~ Lter_wr2$lakename)
-summary(Lter_2sample_lm)
+
 ```
 
->Answer: 
+>Answer: The p-value is 0.2649 meaning we would not reject the null hypothesis and the July temperatures are the same. This does match the results from question 16. 
