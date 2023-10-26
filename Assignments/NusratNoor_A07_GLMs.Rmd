@@ -92,7 +92,7 @@ print(Lter_tbd)
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: The figure suggests that temperature decreases as depth increases. The trend does not seem linear because the temperature is distributed fairly wide in lower depths and then plateau's out after 10 meters. 
+> Answer: The figure suggests that temperature decreases as depth increases. The figure shows a negative linear trend.  
 
 
 7. Perform a linear regression to test the relationship and display the results
