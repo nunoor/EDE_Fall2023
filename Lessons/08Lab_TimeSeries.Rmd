@@ -16,7 +16,7 @@ editor_options:
 ## Set up
 
 ```{r, message = FALSE}
-
+#DONT EVER OMIT OR GET RID OF N/As
 library(tidyverse)
 library(lubridate)
 #install.packages("trend")

@@ -1,6 +1,6 @@
 ---
 title: "Assignment 8: Time Series Analysis"
-author: "Student Name"
+author: "Nusrat Noor"
 date: "Fall 2023"
 output: pdf_document
 geometry: margin=2.54cm
@@ -27,7 +27,17 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 * Set your ggplot theme
 
 ```{r}
+library(tidyverse)
+library(lubridate)
+library(zoo)
+library(trend)
+library(here)
 
+here()
+#creating a sequence from 1981 - other year, do it monthly, will be as a dataframe, use left_join to put together the series and the other part (summary is not enough to check for NAs)
+my_theme <- theme_classic(base_size = 14) + 
+  theme(legend.position = "right")
+theme_set(my_theme)
 ```
 
 
@@ -35,7 +45,8 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 
 ```{r, message = FALSE}
 #1
-
+GaringerOzone <- do.call(rbind, lapply(list.files(path = "../Data/Raw/Ozone_TimeSeries/"), read_csv))
+dim(GaringerOzone)
 ```
 
 ## Wrangle
