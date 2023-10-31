@@ -45,8 +45,15 @@ theme_set(my_theme)
 
 ```{r, message = FALSE}
 #1
-GaringerOzone <- do.call(rbind, lapply(list.files(path = "../Data/Raw/Ozone_TimeSeries/"), read_csv))
-dim(GaringerOzone)
+GaringerOzone_path <- list.files(here("Data/Raw/Ozone_TimeSeries/"), pattern = "\\.csv$", full.names = TRUE)
+# list.files makes a list of files in the chosen folder
+
+GaringerOzone <- bind_rows(lapply(GaringerOzone_path, read.csv, stringsAsFactors = TRUE))
+#the lapply function applies the read.csv command to the folder so that all the files are read
+#bind_rows makes the files into one data frame
+dim(GaringerOzone) #checked dimensions
+#used the help of Chat GPT and google to figure out how to load in all the files at once
+view(GaringerOzone)
 ```
 
 ## Wrangle
@@ -61,9 +68,12 @@ dim(GaringerOzone)
 
 ```{r}
 # 3
-
+GaringerOzone$Date <- as.Date(GaringerOzone$Date)
+# set date column as date class
 # 4
-
+GaringerOzone_wr <- select(GaringerOzone, "Date", "Daily.Max.8.hour.Ozone.Concentration", "DAILY_AQI_VALUE")
+#wrangled data to only include the asked for columns
+view(GaringerOzone_wr)
 # 5
 
 # 6
