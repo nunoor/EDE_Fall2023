@@ -75,10 +75,15 @@ GaringerOzone_wr <- select(GaringerOzone, "Date", "Daily.Max.8.hour.Ozone.Concen
 #wrangled data to only include the asked for columns
 view(GaringerOzone_wr)
 # 5
+Days <- as.data.frame(seq(from = as.Date("2010-01-01"), to = as.Date("2019-12-31"), by = "day"))
 
+Days$Date <- as.Date(Days$Date)
+class(Date)
 # 6
+GaringerOzone <- left_join(GaringerOzone_wr, Days, by = "Date")
 
-
+dim(GaringerOzone)
+class(Date)
 ```
 
 ## Visualize
@@ -87,7 +92,10 @@ view(GaringerOzone_wr)
 
 ```{r}
 #7
-
+ggplot(GaringerOzone, 
+       aes(x = "Date", y = "Daily.Max.8.hour.Ozone.Concentration")) + 
+  geom_line() #+
+  #geom_smooth(aes(y = trend, x = Date), color = "red")
 ```
 
 >Answer:
