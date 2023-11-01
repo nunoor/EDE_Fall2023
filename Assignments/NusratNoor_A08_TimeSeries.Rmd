@@ -35,7 +35,7 @@ library(here)
 
 here()
 #creating a sequence from 1981 - other year, do it monthly, will be as a dataframe, use left_join to put together the series and the other part (summary is not enough to check for NAs)
-my_theme <- theme_classic(base_size = 14) + 
+my_theme <- theme_gray(base_size = 14) + 
   theme(legend.position = "right")
 theme_set(my_theme)
 ```
@@ -97,11 +97,12 @@ view(GaringerOzone)
 ggplot(GaringerOzone, 
        aes(x = Date, y = Daily.Max.8.hour.Ozone.Concentration)) + 
   geom_line() +
-  labs(x = "Date", y = "Ozone Concentration")
-  #geom_smooth(aes(y = trend, x = Date), color = "red")
+  geom_smooth(method = "lm", color = "red") +
+  labs(x = "Date", y = "Ozone Concentration (ppm)", title = "Ozone Concentration Over Time for Garinger High School")
+
 ```
 
->Answer:
+>Answer:There is a slight decrease in Ozone concentration over time. 
 
 ## Time Series Analysis
 
