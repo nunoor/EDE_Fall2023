@@ -249,6 +249,10 @@ ggplot() +
 
 *Now you try*: The URL '<https://raw.githubusercontent.com/ENV859/EnviroAtlasData/main/Wind_Energy.csv>' links to EPA's EnviroAtlas data on the amount of wind energy estimated at the HUC12 scale. You need to load this data, group by HUC8 (computing the sum wind energy of each HUC12 in a given HUC8) and join with the HUC 8 spatial features dataset. 
  * Be sure, as above, you read in the `HUC_12` column as a factor so it doesn't default to a numeric column.
+ 
+```{r}
+#NOW YOU TRY
+```
 
 ```{r}
 #Compute HUC8 wind energy
