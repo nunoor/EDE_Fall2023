@@ -149,7 +149,6 @@ Lastly, we want to attach some gage height data to our site locations. I've cons
 #14. Read the site flow data into a data frame
 siteflow <- read.csv(here("./Data/Raw/NWIS_SiteFlowData_NE_RAW.csv"), colClasses = c('site_no' = 'factor'))
   
-view(siteflow)
 #15. Show the column names
 colnames(siteflow)
 
@@ -173,8 +172,12 @@ Now we can examine where the flooding appears most acute by visualizing gage hei
 
 ```{r map gage sites}
 #Map the points, sized by gage height
-mapview(gage_sf_join, col.regions = brewer.pal(7, 'PuBu')) +
-  mapview(county_sf)
+ggplot() +
+  geom_sf(data = county_sf) +
+  geom_sf(data = gage_sf_join, aes(color = gage_ht), alpha = 0.3) +
+  scale_color_gradient(low = "yellow", high = "darkred") +
+  labs(color = "Gage Height (m)", title = "Gage Site Heights in Nebraska" )
+
 
 ```
 
@@ -192,10 +195,13 @@ Up next we will do some spatial analysis with our data. To prepare for this, we 
 
 ```{r spatial analysis}
 #20 Transform the counties and gage location datasets to UTM Zone 14
-
+county_sf_utm <- st_transform(county_sf, 32614)
+gage_sf_join_utm <- st_transform(gage_sf_join, 32614)
 
 #21 Plot the data
-
+ggplot() +
+  geom_sf(data = county_sf_utm, color = "blue") +
+  geom_sf(data = gage_sf_join_utm, color = "darkred", alpha = 0.3)
 
 ```
 
@@ -213,13 +219,17 @@ Now let's zoom into a particular county and examine the gages located there.
 
 ```{r spatial selection}
 #22 Select the county
-
-
+dawson <- county_sf_utm %>%
+  filter(NAME %in% c("Dawson"))
+mapview(dawson)
 #23 Spatially select gages within the selected county
-
-
+intersect <- gage_sf_join_utm[dawson,]
+mapview(intersect)
 #24 Plot
-
+ggplot()+
+  geom_sf(data = county_sf_utm, color = 'blue') +
+  geom_sf(data = dawson, fill = 'red', alpha = 0.5) +
+  geom_sf(data = intersect, alpha = 0.3)
 
 
 ```
