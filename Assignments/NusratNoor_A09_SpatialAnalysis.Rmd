@@ -73,7 +73,8 @@ county_sf <- st_read(here('./Data/Spatial/cb_2018_us_county_20m.shp')) %>%
 #filtered out NE counties for Nebraska 
 
 #4. Reveal the CRS of the counties features
-st_crs(county_sf) #revealed the CRS of the counties features
+st_crs(county_sf) 
+#revealed the CRS of the counties features
 
 #5. Plot the data
 mapview(county_sf)
@@ -87,7 +88,7 @@ mapview(county_sf)
     <https://spatialreference.org> and examine the link for "Well Known
     Text as HTML" or "Human-Readable OGC WKT"...)
 
-> ANSWER:
+> ANSWER: The EPSG is 4269. This is a geographic coordinate reference system. The CRS uses angular coordinate units and is associated with the North American Datum 1983 (NAD83). 
 
 ### Read in gage locations csv as a dataframe, then display the column names it contains
 
@@ -103,8 +104,11 @@ Next we'll read in some USGS/NWIS gage location data added to the
 
 ```{r Read in USGS Gage Locations}
 #7. Read in gage locations csv as a dataframe
-gage_loc <- read.csv(here("./Data/Raw/NWIS_SiteInfo_NE_RAW.csv"), stringsAsFactors = TRUE, colClasses = c('site_no' = 'factor'))
+gage_loc <- read.csv(here("./Data/Raw/NWIS_SiteInfo_NE_RAW.csv"), 
+                     stringsAsFactors = TRUE, 
+                     colClasses = c('site_no' = 'factor'))
 #read in the gage locations and set strings as factors
+#set site_no as a factor
 
 #8. Reveal the names of the columns
 colnames(gage_loc)
@@ -112,8 +116,9 @@ colnames(gage_loc)
 ```
 
 9.  What columns in the dataset contain the x and y coordinate values,
-    respectively?\
-    \> ANSWER: \>
+    respectively?
+    > ANSWER: The 'dec_long_va' column is the x coordinate 
+    and the 'dec_lat_va' is the y coordinate. 
 
 ### Convert the dataframe to a spatial features ("sf") dataframe
 
@@ -153,9 +158,11 @@ colnames(gage_loc_sf)
 #13. Plot the gage locations atop the county features
 ggplot() +
   geom_sf(data = county_sf, color = 'blue') +
-  geom_sf(data = gage_loc_sf, color = 'red', shape = 0) +
-  labs(title = "NWIS Gage Locations in Nebraska", subtitle = "Nusrat Noor")
-
+  geom_sf(data = gage_loc_sf, color = 'red', shape = 1) +
+  labs(title = "NWIS Gage Locations in Nebraska", 
+       subtitle = "Nusrat Noor")
+#plotted the gage locations on top of the county features
+#differentiated by color and added title and subtitle
 ```
 
 ### Read in the gage height data and join the site location data to it.
@@ -184,21 +191,27 @@ recorded during the recent flood event. This file is titled
 
 ```{r Read in gage site data}
 #14. Read the site flow data into a data frame
-siteflow <- read.csv(here("./Data/Raw/NWIS_SiteFlowData_NE_RAW.csv"), colClasses = c('site_no' = 'factor'))
-  
+siteflow <- read.csv(here("./Data/Raw/NWIS_SiteFlowData_NE_RAW.csv"), 
+                     colClasses = c('site_no' = 'factor'))
+#read in the site flow data and set the 'site_no' to factor
+
 #15. Show the column names
 colnames(siteflow)
+#revealed column names
 
 #16. Join the flow data to our NWIS gage location spatial dataframe
 gage_sf_join <- gage_loc_sf %>% 
   left_join(siteflow, by = c("site_no" = "site_no") )
+#left_joined the gage location spatial dataframe 
+#to the siteflow dataset and created a new dataframe
 
 #17. Show the column names of the joined dataset
 colnames(gage_sf_join)
+#revealed the column names
 
 #18. Show the dimensions of this joined dataset
 dim(gage_sf_join)
-
+#revealed the dimensions of the joined dataset
 ```
 
 ### Map the pattern of gage height data
@@ -211,10 +224,17 @@ height by color, shape, other visualization technique.
 ```{r map gage sites}
 #Map the points, sized by gage height
 ggplot() +
-  geom_sf(data = county_sf) +
-  geom_sf(data = gage_sf_join, aes(color = gage_ht), alpha = 0.3) +
-  scale_color_gradient(low = "yellow", high = "darkred") +
-  labs(color = "Gage Height (m)", title = "Gage Site Heights in Nebraska" )
+  geom_sf(data = county_sf) + 
+  #plotted the county features
+  geom_sf(data = gage_sf_join, 
+          aes(color = gage_ht), alpha = 0.3) + 
+  #plotted the gage sites and showed the magnitude of gage height by color
+  scale_color_gradient(low = "yellow", high = "darkred") + 
+  #set the color scale
+  labs(color = "Gage Height (m)", 
+       title = "Gage Site Heights in Nebraska",
+       subtitle = "Nusrat Noor" ) 
+  #changed labels and added title/subtitle
 
 ```
 
@@ -236,13 +256,20 @@ We'll choose UTM Zone 14N (EPGS = 32614).
 ```{r spatial analysis}
 #20 Transform the counties and gage location datasets to UTM Zone 14
 county_sf_utm <- st_transform(county_sf, 32614)
+#transformed the county dataset to UTM zone 14
 gage_sf_join_utm <- st_transform(gage_sf_join, 32614)
+#transformed the gage location dataset to UTM zone 14
 
 #21 Plot the data
 ggplot() +
-  geom_sf(data = county_sf_utm, color = "blue") +
-  geom_sf(data = gage_sf_join_utm, color = "darkred", alpha = 0.3)
-
+  geom_sf(data = county_sf_utm, color = "blue") + 
+  #plotted the county features
+  geom_sf(data = gage_sf_join_utm, 
+          color = "darkred", alpha = 0.3) + 
+  #plotted the gage locations
+  labs(title = "Gage Sites in Nebraska Projected to UTM Zone 14", 
+       subtitle = "Nusrat Noor")
+  #added title and subtitle
 ```
 
 ### Select the gages falling within a given county
@@ -258,15 +285,23 @@ county
 #22 Select the county
 dawson <- county_sf_utm %>%
   filter(NAME %in% c("Dawson"))
-mapview(dawson)
+#filtered out dawson county
+
 #23 Spatially select gages within the selected county
 intersect <- gage_sf_join_utm[dawson,]
-mapview(intersect)
+#selected out the the gages inside Dawson county
+
 #24 Plot
 ggplot()+
-  geom_sf(data = county_sf_utm, color = 'blue') +
-  geom_sf(data = dawson, fill = 'red', alpha = 0.5) +
-  geom_sf(data = intersect, alpha = 0.3)
-
+  geom_sf(data = county_sf_utm, color = 'blue') + 
+  #plotted the county features
+  geom_sf(data = dawson, fill = 'gold', alpha = 0.5) + 
+  #plotted the selected dawson county and filled it as 
+  #a different color to set it apart
+  geom_sf(data = intersect, alpha = 0.3, color = 'darkred') + 
+  #plotted the gage heights just in dawson county
+  labs(title = "Gage Sites in Dawson County, Nebraska", 
+       subtitle = "Nusrat Noor")
+  #added title and subtitle
 
 ```
