@@ -1,6 +1,6 @@
 ---
 title: "Assignment 10: Data Scraping"
-author: "Student Name"
+author: "Nusrat Noor"
 output: pdf_document
 ---
 
@@ -25,7 +25,17 @@ This exercise accompanies the lessons in Environmental Data Analytics on data sc
 
 ```{r 1. Project Setup, message = FALSE}
 #1 
+library(tidyverse)
+library(lubridate)
+library(here)
+library(rvest)
 
+here()
+
+mytheme <- theme_classic() +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "top")
+theme_set(mytheme)
 
 ```
 
@@ -38,7 +48,9 @@ Indicate this website as the as the URL to be scraped. (In other words, read the
 
 ```{r set.the.scraping.website}
 #2 
+website <- read_html('https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year=2022')
 
+website
 ```
 
 3. The data we want to collect are listed below:
@@ -57,7 +69,30 @@ In the code chunk below scrape these values, assigning them to four separate var
 
 ```{r scrape.the.data}
 #3 
+water_sys <- website %>%
+  html_nodes("div+ table tr:nth-child(1) td:nth-child(2)") %>%
+  html_text()
+water_sys
 
+PWSID <- website %>%
+  html_nodes("td tr:nth-child(1) td:nth-child(5)") %>%
+  html_text()
+PWSID
+
+Ownership <- website %>%
+  html_nodes("div+ table tr:nth-child(2) td:nth-child(4)") %>%
+  html_text()
+Ownership
+
+MGD_monthly <- website %>%
+  html_nodes("th~ td+ td") %>%
+  html_text()
+MGD_monthly
+
+months <- website %>%
+  html_nodes(".fancy-table:nth-child(31) tr+ tr th") %>%
+  html_text()
+months
 ```
 
 
@@ -71,8 +106,22 @@ In the code chunk below scrape these values, assigning them to four separate var
 
 ```{r create.a.dataframe.from.scraped.data}
 #4 
+MGD_df <- data.frame("Month" = months,
+                     "Year" = rep(2022,12),
+                     "Max_withdrawls" = as.numeric(MGD_monthly))
+  
+view(MGD_df)
+MGD_df <- MGD_df %>%
+  mutate(Water_system = !!water_sys, 
+         PWSID = !!PWSID,
+         Ownership = !!Ownership,
+         Date = my(paste(Month,"-",Year)))
 
 #5 
+
+ggplot(MGD_df,aes(x=Date, y = max_withdrawals)) +
+  geom_point() +
+  labs(y="Maximum Day Use", title = "2022 Maximum Daily Use per Month", subtitle = "Nusrat Noor")
 
 ```
 
@@ -80,16 +129,53 @@ In the code chunk below scrape these values, assigning them to four separate var
 
 ```{r construct.a.scraping.function}
 #6. 
+base_url <- 'https://www.ncwater.org/WUDC/app/LWSP/search.php'
+the_pwsid <- '03-32-010'
+the_year <- 2015
+scrape_url <- paste0(base_url, '/', the_pwsid, '/', the_year)
 
-
+scrape.it <-function(the_pwsid, the_year){
+  the_website <- read_html(paste0(base_url, '/', the_pwsid, '/', the_year))
+  
+  water_sys <- the_website %>%
+  html_nodes("div+ table tr:nth-child(1) td:nth-child(2)") %>%
+  html_text()
+  PWSID <- the_website %>%
+  html_nodes("td tr:nth-child(1) td:nth-child(5)") %>%
+  html_text()
+  Ownership <- the_website %>%
+  html_nodes("div+ table tr:nth-child(2) td:nth-child(4)") %>%
+  html_text()
+  MGD_monthly <- the_website %>%
+  html_nodes("th~ td+ td") %>%
+  html_text()
+  months <- the_website %>%
+  html_nodes(".fancy-table:nth-child(31) tr+ tr th") %>%
+  html_text()
+  
+  MGD_df <- data.frame("Month" = months,
+                       "Year" = rep(the_year,12),
+                       "Max_withdrawls" = as.numeric(MGD_monthly)) %>%
+    mutate(Water_system = !!water_sys, 
+         PWSID = !!PWSID,
+         Ownership = !!Ownership,
+         Date = my(paste(Month,"-",Year)))
+  return(MGD_df)
+} 
+cat("Length of months:", length(months), "\n")
+cat("Length of the_year:", length(the_year), "\n")
+cat("Length of MGD_monthly:", length(MGD_monthly), "\n")
+print(months)
+print(the_year)
+print(MGD_monthly)
 ```
 
 7. Use the function above to extract and plot max daily withdrawals for Durham (PWSID='03-32-010') for each month in 2015
 
 ```{r fetch.and.plot.Durham.2015.data}
 #7 
-
-
+the_df <- scrape.it('03-32-010', 2015)
+result_df <- scrape.it(the_pwsid = "03-32-010", the_year = 2015)
 ```
 
 8. Use the function above to extract data for Asheville (PWSID = 01-11-010) in 2015. Combine this data with the Durham data collected above and create a plot that compares Asheville's to Durham's water withdrawals.
