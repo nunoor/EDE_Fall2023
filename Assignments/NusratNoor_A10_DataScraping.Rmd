@@ -109,8 +109,7 @@ months
 MGD_df <- data.frame("Month" = months,
                      "Year" = rep(2022,12),
                      "Max_withdrawls" = as.numeric(MGD_monthly))
-  
-view(MGD_df)
+
 MGD_df <- MGD_df %>%
   mutate(Water_system = !!water_sys, 
          PWSID = !!PWSID,
@@ -119,8 +118,8 @@ MGD_df <- MGD_df %>%
 
 #5 
 
-ggplot(MGD_df,aes(x=Date, y = max_withdrawals)) +
-  geom_point() +
+ggplot(MGD_df,aes(x=Date, y = Max_withdrawls)) +
+  geom_line() +
   labs(y="Maximum Day Use", title = "2022 Maximum Daily Use per Month", subtitle = "Nusrat Noor")
 
 ```
@@ -129,45 +128,45 @@ ggplot(MGD_df,aes(x=Date, y = max_withdrawals)) +
 
 ```{r construct.a.scraping.function}
 #6. 
-base_url <- 'https://www.ncwater.org/WUDC/app/LWSP/search.php'
+base_url <- 'https://www.ncwater.org/WUDC/app/LWSP/report.php?'
 the_pwsid <- '03-32-010'
 the_year <- 2015
-scrape_url <- paste0(base_url, '/', the_pwsid, '/', the_year)
+scrape_url <- paste0(base_url, 'pwsid=', the_pwsid, '&year=', the_year)
 
 scrape.it <-function(the_pwsid, the_year){
-  the_website <- read_html(paste0(base_url, '/', the_pwsid, '/', the_year))
+  the_website <- read_html(scrape_url)
+  
+  water_sys_tag <- 'div+ table tr:nth-child(1) td:nth-child(2)'
+  PWSID_tag <- 'td tr:nth-child(1) td:nth-child(5)'
+  ownership_tag <- 'div+ table tr:nth-child(2) td:nth-child(4)'
+  mgd_monthly_tag <- 'th~ td+ td'
+  months_tag <- '.fancy-table:nth-child(31) tr+ tr th'
   
   water_sys <- the_website %>%
-  html_nodes("div+ table tr:nth-child(1) td:nth-child(2)") %>%
+  html_nodes(water_sys_tag) %>%
   html_text()
   PWSID <- the_website %>%
-  html_nodes("td tr:nth-child(1) td:nth-child(5)") %>%
+  html_nodes(PWSID_tag) %>%
   html_text()
   Ownership <- the_website %>%
-  html_nodes("div+ table tr:nth-child(2) td:nth-child(4)") %>%
+  html_nodes(ownership_tag) %>%
   html_text()
   MGD_monthly <- the_website %>%
-  html_nodes("th~ td+ td") %>%
+  html_nodes(mgd_monthly_tag) %>%
   html_text()
   months <- the_website %>%
-  html_nodes(".fancy-table:nth-child(31) tr+ tr th") %>%
+  html_nodes(months_tag) %>%
   html_text()
-  
-  MGD_df <- data.frame("Month" = months,
-                       "Year" = rep(the_year,12),
+  Durham_df <- data.frame("Month" = months, 
+                       "Year" = rep(the_year,length(months)), 
                        "Max_withdrawls" = as.numeric(MGD_monthly)) %>%
     mutate(Water_system = !!water_sys, 
          PWSID = !!PWSID,
          Ownership = !!Ownership,
          Date = my(paste(Month,"-",Year)))
-  return(MGD_df)
+  return(Durham_df)
 } 
-cat("Length of months:", length(months), "\n")
-cat("Length of the_year:", length(the_year), "\n")
-cat("Length of MGD_monthly:", length(MGD_monthly), "\n")
-print(months)
-print(the_year)
-print(MGD_monthly)
+print(Max_withdrawls)
 ```
 
 7. Use the function above to extract and plot max daily withdrawals for Durham (PWSID='03-32-010') for each month in 2015
@@ -175,14 +174,61 @@ print(MGD_monthly)
 ```{r fetch.and.plot.Durham.2015.data}
 #7 
 the_df <- scrape.it('03-32-010', 2015)
-result_df <- scrape.it(the_pwsid = "03-32-010", the_year = 2015)
+view(the_df)
+ggplot(the_df, aes(x=Date, y=Max_withdrawls)) +
+  geom_line() +
+  labs(y="Maximum Day Use", title = "2015 Maximum Daily Use per Month")
 ```
 
 8. Use the function above to extract data for Asheville (PWSID = 01-11-010) in 2015. Combine this data with the Durham data collected above and create a plot that compares Asheville's to Durham's water withdrawals.
 
 ```{r fetch.and.plot.Asheville.2015.data}
 #8 
+base_url <- 'https://www.ncwater.org/WUDC/app/LWSP/report.php?'
+the_pwsid <- '01-11-010'
+the_year <- 2015
+scrape_url <- paste0(base_url, 'pwsid=', the_pwsid, '&year=', the_year)
 
+scrape.it <-function(the_pwsid, the_year){
+  the_website <- read_html(scrape_url)
+  
+  water_sys_tag <- 'div+ table tr:nth-child(1) td:nth-child(2)'
+  PWSID_tag <- 'td tr:nth-child(1) td:nth-child(5)'
+  ownership_tag <- 'div+ table tr:nth-child(2) td:nth-child(4)'
+  mgd_monthly_tag <- 'th~ td+ td'
+  months_tag <- '.fancy-table:nth-child(31) tr+ tr th'
+  
+  water_sys <- the_website %>%
+  html_nodes(water_sys_tag) %>%
+  html_text()
+  PWSID <- the_website %>%
+  html_nodes(PWSID_tag) %>%
+  html_text()
+  Ownership <- the_website %>%
+  html_nodes(ownership_tag) %>%
+  html_text()
+  MGD_monthly <- the_website %>%
+  html_nodes(mgd_monthly_tag) %>%
+  html_text()
+  months <- the_website %>%
+  html_nodes(months_tag) %>%
+  html_text()
+  Durham_df <- data.frame("Month" = months, 
+                       "Year" = rep(the_year,12), 
+                       "Max_withdrawls" = as.numeric(MGD_monthly)) %>%
+    mutate(Water_system = !!water_sys, 
+         PWSID = !!PWSID,
+         Ownership = !!Ownership,
+         Date = my(paste(Month,"-",Year)))
+  return(Durham_df)
+}
+print(PWSID)
+print(the_year)
+print(Max_withdrawls)
+print(months)
+print(the_year)
+print(MGD_monthly)
+Ash_df <- scrape.it('01-11-010', 2015)
 
 ```
 
