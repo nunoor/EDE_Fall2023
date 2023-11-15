@@ -129,7 +129,8 @@ MGD_df <- MGD_df %>%
 
 ggplot(MGD_df,aes(x=Date, y = Max_withdrawls)) +
   geom_line() +
-  labs(y="Maximum Day Use (mgd)", x="Month", title = "2022 Maximum Daily Use", subtitle = "Nusrat Noor") +
+  labs(y="Maximum Day Use (mgd)", x="Month", title = "2022 Maximum Daily Use",
+       subtitle = "Nusrat Noor") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b")
 #created line plot, cleaned labels, and scaled the x-axis to show the months in order
 ```
@@ -188,7 +189,8 @@ the_df <- scrape.it('03-32-010', 2015)
 #ran the function for Durham 2015
 ggplot(the_df, aes(x=Date, y=Max_withdrawls)) +
   geom_line() +
-  labs(y="Maximum Day Use (mgd)", x="Month", title = "2015 Maximum Daily Use", subtitle = "Durham, NC") +
+  labs(y="Maximum Day Use (mgd)", x="Month", title = "2015 Maximum Daily Use",
+       subtitle = "Durham, NC") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b")
 #plotted the 2015 max daily usage for durham
 ```
@@ -204,7 +206,8 @@ combined_df <- full_join(x=the_df, y =Ash_df)
 
 ggplot(combined_df, aes(x=Date, y=Max_withdrawls, color = PWSID)) +
   geom_line() +
-  labs(y="Maximum Day Use (mgd)", x="Month", title = "2015 Maximum Daily Use per Month", subtitle = "Nusrat Noor") +
+  labs(y="Maximum Day Use (mgd)", x="Month", title = "2015 Maximum Daily Use", 
+       subtitle = "Nusrat Noor") +
   scale_x_date(date_breaks = "1 month", date_labels = "%b")
 #plotted the combined dataframe
 ```
@@ -220,12 +223,14 @@ the_years <- 2010:2021 #set the years wanted
 the_pwsid_ash <- '01-11-010' #set the pwsid for asheville
 
 dfs_Ashville <- map2(the_pwsid_ash, the_years, scrape.it) %>%
-  bind_rows(dfs_Ashville)
+  bind_rows()
 #mapped the scrape.it function to give data for all years and combined to one dataframe
 ggplot(dfs_Ashville, aes(x=Date, y =Max_withdrawls)) +
   geom_point() +
   geom_smooth(method = "loess", se=FALSE, color = "darkred") +
-  labs(x="Year", y= "Maximum Day Use (mgd)", title = "Asheville Max Daily Withdrawl (2010-2021)", subtitle = "Nusrat Noor") +
+  labs(x="Year", y= "Maximum Day Use (mgd)", 
+       title = "Asheville Max Daily Withdrawl (2010-2021)", 
+       subtitle = "Nusrat Noor") +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y")
 #plotted the multiyear data
 ```

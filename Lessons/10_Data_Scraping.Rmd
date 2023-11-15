@@ -335,7 +335,7 @@ dfs_2020 <- map2(the_years, the_facility_ids_subset, scrape.it)
 
 #Conflate the returned list of dataframes into a single one
 df_2020 <- bind_rows(dfs_2020)
-
+view(dfs_2020)
 
 #Plot
 ggplot(df_2020,aes(y = Avg_Withdrawals_mgd, x=Facility_type)) +
