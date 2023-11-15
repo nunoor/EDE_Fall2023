@@ -166,7 +166,7 @@ scrape.it <-function(the_pwsid, the_year){
          Date = my(paste(Month,"-",Year)))
   return(Durham_df)
 } 
-print(Max_withdrawls)
+
 ```
 
 7. Use the function above to extract and plot max daily withdrawals for Durham (PWSID='03-32-010') for each month in 2015
@@ -189,45 +189,6 @@ the_pwsid <- '01-11-010'
 the_year <- 2015
 scrape_url <- paste0(base_url, 'pwsid=', the_pwsid, '&year=', the_year)
 
-scrape.it <-function(the_pwsid, the_year){
-  the_website <- read_html(scrape_url)
-  
-  water_sys_tag <- 'div+ table tr:nth-child(1) td:nth-child(2)'
-  PWSID_tag <- 'td tr:nth-child(1) td:nth-child(5)'
-  ownership_tag <- 'div+ table tr:nth-child(2) td:nth-child(4)'
-  mgd_monthly_tag <- 'th~ td+ td'
-  months_tag <- '.fancy-table:nth-child(31) tr+ tr th'
-  
-  water_sys <- the_website %>%
-  html_nodes(water_sys_tag) %>%
-  html_text()
-  PWSID <- the_website %>%
-  html_nodes(PWSID_tag) %>%
-  html_text()
-  Ownership <- the_website %>%
-  html_nodes(ownership_tag) %>%
-  html_text()
-  MGD_monthly <- the_website %>%
-  html_nodes(mgd_monthly_tag) %>%
-  html_text()
-  months <- the_website %>%
-  html_nodes(months_tag) %>%
-  html_text()
-  Durham_df <- data.frame("Month" = months, 
-                       "Year" = rep(the_year,12), 
-                       "Max_withdrawls" = as.numeric(MGD_monthly)) %>%
-    mutate(Water_system = !!water_sys, 
-         PWSID = !!PWSID,
-         Ownership = !!Ownership,
-         Date = my(paste(Month,"-",Year)))
-  return(Durham_df)
-}
-print(PWSID)
-print(the_year)
-print(Max_withdrawls)
-print(months)
-print(the_year)
-print(MGD_monthly)
 Ash_df <- scrape.it('01-11-010', 2015)
 
 ```
