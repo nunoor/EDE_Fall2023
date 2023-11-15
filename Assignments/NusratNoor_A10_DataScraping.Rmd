@@ -201,6 +201,8 @@ the_pwsid <- '01-11-010'
 
 the_main_url <- 'https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year='
 
+the_main_website <- read_html(the_main_url)
+
 ```
 
 Question: Just by looking at the plot (i.e. not running statistics), does Asheville have a trend in water usage over time?
